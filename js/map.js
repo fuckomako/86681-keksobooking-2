@@ -81,6 +81,7 @@ var renderMapPin = function (offer) {
   mapPin.style.left = offer.location.x - (mapPinImage.width / 2) + 'px';
   mapPin.style.top = offer.location.y - mapPinImage.height + 'px';
   mapPin.querySelector('img').src = offer.author.avatar;
+  mapPin.querySelector('img').alt = offer.offer.title;
 
   return mapPin;
 };
@@ -88,6 +89,7 @@ var renderMapPin = function (offer) {
 var showCard = function (offer) {
 
   var mapCard = template.querySelector('.map__card').cloneNode(true);
+  map.insertBefore(mapCard, document.querySelector('.map__filters-container'));
 
   var getValueTypeOffer = function () {
     if (offer.offer.type === 'flat') {
