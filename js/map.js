@@ -4,6 +4,7 @@ var TITLES = ['Большая уютная квартира', 'Маленька�
 var TYPE = ['flat', 'house', 'bungalo', 'palace'];
 var TIMES = ['12:00', '13:00', '14:00'];
 var FETURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var NUMBER_OF_PINS = 8;
 var CARD_RENDER_NUMBER = 0;
 
@@ -20,6 +21,10 @@ var getFeatures = function () {
   return FETURES.slice(0, randomLength);
 };
 
+var getPhotos = function () {
+  return PHOTOS.slice(0, PHOTOS.length);
+};
+
 var getRandomElementOfArray = function (arr) {
   return arr[getRandomValue(0, arr.length)];
 };
@@ -31,7 +36,7 @@ var generateOffer = function (indexOffer) {
   };
   return {
     'author': {
-      'avatar': 'img/avatars/user0' + (indexOffer + 1) + '.png'
+      'avatar': 'img/avatars/user0' + Math.floor(Math.random() * 8 + 1) + '.png'
     },
 
     'offer': {
@@ -39,13 +44,13 @@ var generateOffer = function (indexOffer) {
       'address': coordinatesLocation.x + ', ' + coordinatesLocation.y,
       'price': getRandomValue(1000, 1000000),
       'type': getRandomElementOfArray(TYPE),
-      'rooms': getRandomValue(1, 5),
+      'rooms': getRandomValue(1, 6),
       'guests': getRandomValue(1, 10),
       'checkin': getRandomElementOfArray(TIMES),
       'checkout': getRandomElementOfArray(TIMES),
       'features': getFeatures(),
       'description': '',
-      'photos': []
+      'photos': getPhotos(PHOTOS)
     },
     'location': coordinatesLocation
   };
@@ -96,26 +101,43 @@ var showCard = function (offer) {
     }
   };
 
+  // @TODO ДОПОЛНИЕЛЬНОЕ ЗАДАНИЕ насписать функцию сконения числительных для русского языка.
+  // Не вход принимат число, и три слова, а возвращает слово, наприме
+  // N, гость, гостя, гостей — где N, целое число
+  var getRoomsName = function (roomsCount) {
+    var roomsText = roomsCount + ' комнат';
+    if (roomsCount === 1) {
+      roomsText += 'a';
+    } else if ([2, 3, 4].includes(roomsCount)) {
+      roomsText += 'ы';
+    } else if (roomsCount === 5) {
+      roomsText = roomsText;
+    }
+    return roomsText;
+  };
+
   mapCard.querySelector('.popup__title').textContent = offer.offer.title;
   mapCard.querySelector('.popup__text--address').textContent = offer.offer.address;
   mapCard.querySelector('.popup__text--price').innerHTML = offer.offer.price + ' &#x20bd;/ночь';
   mapCard.querySelector('.popup__type').textContent = getValueTypeOffer();
-  mapCard.querySelector('.popup__type').nextElementSibling.textContent = offer.offer.rooms + ' для ' + offer.offer.guests + ' гостей';
-  // @TODO ДОПОЛНИЕЛЬНОЕ ЗАДАНИЕ насписать функцию сконения числительных для русского языка.
-  // Не вход принимат число, и три слова, а возвращает слово, наприме
-  // N, гость, гостя, гостей — где N, целое число
-  mapCard.querySelector('.popup__features').previousElementSibling.textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
-  mapCard.querySelector('.popup__features').nextElementSibling.textContent = offer.offer.description;
-  mapCard.querySelector('.popup__description').textContent = offer.offer.description;
-  mapCard.querySelector('.popup__avatar').src = offer.author.avatar;
+  mapCard.querySelector('.popup__text--capacity').innerHTML = getRoomsName(offer.offer.rooms) + ' для ' + offer.offer.guests + ' гостей';
+  mapCard.querySelector('.popup__text--time').innerHTML = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
   var featuresList = mapCard.querySelector('.popup__features');
   removeChilds(featuresList);
+  mapCard.querySelector('.popup__description').textContent = offer.offer.description;
+  for (var i = 0; i < offer.offer.photos.length - 1; i++) {
+    mapCard.querySelector('.popup__photos').appendChild(mapCard.querySelector('.popup__photo').cloneNode(true));
+  }
+  for (i = 0; i < PHOTOS.length; i++) {
+    mapCard.querySelector('.popup__photo:nth-child(' + (i + 1) + ')').src = offer.offer.photos[i];
+  }
+  mapCard.querySelector('.popup__avatar').src = offer.author.avatar;
 
   var fragmentFeatures = document.createDocumentFragment();
 
-  for (var i = 0; i < offer.offer.features.length; i++) {
+  for (var j = 0; j < offer.offer.features.length; j++) {
     var featureElement = document.createElement('li');
-    featureElement.classList.add('feature', 'feature--' + offer.offer.features[i]);
+    featureElement.classList.add('feature', 'feature--' + offer.offer.features[j]);
     fragmentFeatures.appendChild(featureElement);
   }
 
