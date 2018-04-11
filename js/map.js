@@ -9,7 +9,7 @@ var NUMBER_OF_PINS = 8;
 var CARD_RENDER_NUMBER = 0;
 
 var getRandomValue = function (min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
+  return Math.round(Math.random() * (max - min) + min);
 };
 
 var getRandomItemNoRepeat = function (arr) {
@@ -47,7 +47,7 @@ var generateOffer = function (indexOffer) {
       'address': coordinatesLocation.x + ', ' + coordinatesLocation.y,
       'price': getRandomValue(1000, 1000000),
       'type': getRandomElementOfArray(TYPE),
-      'rooms': getRandomValue(1, 6),
+      'rooms': getRandomValue(1, 5),
       'guests': getRandomValue(1, 10),
       'checkin': getRandomElementOfArray(TIMES),
       'checkout': getRandomElementOfArray(TIMES),
@@ -93,7 +93,7 @@ var renderPhotos = function (array, mapTemplate) {
   var photos = mapTemplate.querySelector('.popup__photos');
   var photo = mapTemplate.querySelector('.popup__photos').querySelector('img');
   photo.src = array.offer.photos[0];
-  for (var i = 1; i < 3; i++) {
+  for (var i = 1; i < array.offer.photos.length; i++) {
     photos.appendChild(photo.cloneNode()).src = array.offer.photos[i];
   }
 };
@@ -130,23 +130,28 @@ var showCard = function (offer) {
   // @TODO ДОПОЛНИЕЛЬНОЕ ЗАДАНИЕ насписать функцию сконения числительных для русского языка.
   // Не вход принимат число, и три слова, а возвращает слово, наприме
   // N, гость, гостя, гостей — где N, целое число
-  var getRoomsName = function (roomsCount) {
-    var roomsText = roomsCount + ' комнат';
-    if (roomsCount === 1) {
-      roomsText += 'a';
-    } else if ([2, 3, 4].includes(roomsCount)) {
-      roomsText += 'ы';
-    } else if (roomsCount === 5) {
-      roomsText = roomsText;
+
+  var getRoomsName = function (number, arrWords) {
+    var n = Math.abs(number);
+    var counter = 0;
+    n %= 100;
+    if (n > 4 && n < 20 || n === 0 || n >= 5) {
+      counter = 2;
     }
-    return roomsText;
+    n %= 10;
+    if (n > 1 && n < 5) {
+      counter = 1;
+    }
+    return arrWords[counter];
   };
 
+  var roomsNamesArray = ['комната', 'комнаты', 'комнат'];
+  var currentRoomsName = getRoomsName(offer.offer.rooms, roomsNamesArray);
   mapCard.querySelector('.popup__title').textContent = offer.offer.title;
   mapCard.querySelector('.popup__text--address').textContent = offer.offer.address;
   mapCard.querySelector('.popup__text--price').innerHTML = offer.offer.price + ' &#x20bd;/ночь';
   mapCard.querySelector('.popup__type').textContent = getValueTypeOffer();
-  mapCard.querySelector('.popup__text--capacity').textContent = getRoomsName(offer.offer.rooms) + ' для ' + offer.offer.guests + ' гостей';
+  mapCard.querySelector('.popup__text--capacity').textContent = offer.offer.rooms + ' ' + currentRoomsName + ' для ' + offer.offer.guests + ' гостей';
   mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
   mapCard.querySelector('.popup__description').textContent = offer.offer.description;
   mapCard.querySelector('.popup__avatar').src = offer.author.avatar;
@@ -156,13 +161,14 @@ var showCard = function (offer) {
   return mapCard;
 };
 
-var removeChilds = function (parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-};
+// var removeChilds = function (parent) {
+//   while (parent.firstChild) {
+//     parent.removeChild(parent.firstChild);
+//   }
+// };
 
-var renderInit = function (offers) {
+// Не пойму почему когда задаю параметр offers программа не работает!
+var renderInit = function () {
 
   var fragment = document.createDocumentFragment();
 
@@ -175,4 +181,4 @@ var renderInit = function (offers) {
   mapListElement.appendChild(fragment);
 };
 
-renderInit(offers);
+renderInit();
