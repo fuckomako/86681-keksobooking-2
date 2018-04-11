@@ -98,6 +98,8 @@ var renderPhotos = function (array, mapTemplate) {
   }
 };
 
+
+
 var renderFeatures = function (array, mapTemplate) {
   var featureList = mapTemplate.querySelector('.popup__features');
   var featureItem = featureList.querySelectorAll('.popup__feature');
@@ -105,8 +107,14 @@ var renderFeatures = function (array, mapTemplate) {
     if (array.offer.features.some(function (elem) {
       return elem === FEATURES.reverse()[i];
     })) {
-      featureList.removeChild(featureItem[i]);
+      removeChilds(featureItem[i]);
     }
+  }
+};
+
+var removeChilds = function (parent) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
   }
 };
 
@@ -160,12 +168,6 @@ var showCard = function (offer) {
 
   return mapCard;
 };
-
-// var removeChilds = function (parent) {
-//   while (parent.firstChild) {
-//     parent.removeChild(parent.firstChild);
-//   }
-// };
 
 // Не пойму почему когда задаю параметр offers программа не работает!
 var renderInit = function () {
