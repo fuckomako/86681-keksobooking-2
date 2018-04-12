@@ -89,27 +89,28 @@ var renderMapPin = function (offer) {
   return mapPin;
 };
 
-var renderPhotos = function (array, mapTemplate) {
-  var photos = mapTemplate.querySelector('.popup__photos');
-  var photo = mapTemplate.querySelector('.popup__photos').querySelector('img');
-  photo.src = array.offer.photos[0];
-  for (var i = 1; i < array.offer.photos.length; i++) {
-    photos.appendChild(photo.cloneNode()).src = array.offer.photos[i];
-  }
+var renderPhotos = function (count) {
+  var photo = document.createElement('img');
+  photo.src = count;
+  photo.width = 30;
+  photo.height = 30;
+  photo.classList.add('popup__photo');
+  return photo;
 };
 
+var renderFeatures = function (count) {
+  var feature = document.createElement('li');
+  feature.classList.add('popup__feature');
+  feature.classList.add('popup__feature--' + count);
+  return feature;
+};
 
-
-var renderFeatures = function (array, mapTemplate) {
-  var featureList = mapTemplate.querySelector('.popup__features');
-  var featureItem = featureList.querySelectorAll('.popup__feature');
-  for (var i = FEATURES.length - 1; i >= 0; i--) {
-    if (array.offer.features.some(function (elem) {
-      return elem === FEATURES.reverse()[i];
-    })) {
-      removeChilds(featureItem[i]);
-    }
+var getArrayCollection = function (array, renderFunction) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < array.length; i++) {
+    fragment.appendChild(renderFunction(array[i]));
   }
+  return fragment;
 };
 
 var removeChilds = function (parent) {
@@ -122,6 +123,8 @@ var showCard = function (offer) {
 
   var mapCard = template.querySelector('.map__card').cloneNode(true);
   map.insertBefore(mapCard, document.querySelector('.map__filters-container'));
+  var featuresBlock = mapCard.querySelector('.popup__features');
+  var photosBlock = mapCard.querySelector('.popup__photos');
 
   var getValueTypeOffer = function () {
     if (offer.offer.type === 'flat') {
@@ -139,7 +142,7 @@ var showCard = function (offer) {
   // Не вход принимат число, и три слова, а возвращает слово, наприме
   // N, гость, гостя, гостей — где N, целое число
 
-  var getRoomsName = function (number, arrWords) {
+  var getCorrectName = function (number, arrWords) {
     var n = Math.abs(number);
     var counter = 0;
     n %= 100;
@@ -154,17 +157,21 @@ var showCard = function (offer) {
   };
 
   var roomsNamesArray = ['комната', 'комнаты', 'комнат'];
-  var currentRoomsName = getRoomsName(offer.offer.rooms, roomsNamesArray);
+  var guestsNamesArray = ['гость', 'гостя', 'гостей'];
+  var currentRoomsName = getCorrectName(offer.offer.rooms, roomsNamesArray);
+  var currentGuestsName = getCorrectName(offer.offer.guests, guestsNamesArray);
   mapCard.querySelector('.popup__title').textContent = offer.offer.title;
   mapCard.querySelector('.popup__text--address').textContent = offer.offer.address;
   mapCard.querySelector('.popup__text--price').innerHTML = offer.offer.price + ' &#x20bd;/ночь';
   mapCard.querySelector('.popup__type').textContent = getValueTypeOffer();
-  mapCard.querySelector('.popup__text--capacity').textContent = offer.offer.rooms + ' ' + currentRoomsName + ' для ' + offer.offer.guests + ' гостей';
+  mapCard.querySelector('.popup__text--capacity').textContent = offer.offer.rooms + ' ' + currentRoomsName + ' для ' + offer.offer.guests + ' ' + currentGuestsName;
   mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
   mapCard.querySelector('.popup__description').textContent = offer.offer.description;
   mapCard.querySelector('.popup__avatar').src = offer.author.avatar;
-  renderFeatures(offer, mapCard);
-  renderPhotos(offer, mapCard);
+  removeChilds(featuresBlock);
+  featuresBlock.appendChild(getArrayCollection(offer.offer.features, renderFeatures));
+  removeChilds(photosBlock);
+  photosBlock.appendChild(getArrayCollection(offer.offer.photos, renderPhotos));
 
   return mapCard;
 };
