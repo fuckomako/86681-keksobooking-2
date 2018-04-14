@@ -6,7 +6,8 @@ var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var NUMBER_OF_PINS = 8;
-var CARD_RENDER_NUMBER = 0;
+var ESC_BUTTON = 27;
+// var CARD_RENDER_NUMBER = 0;
 
 var getRandomValue = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -72,7 +73,7 @@ var addPins = function (numberOfObjects) {
 var offers = addPins(NUMBER_OF_PINS);
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
+
 
 var mapListElement = map.querySelector('.map__pins');
 var template = document.querySelector('template').content;
@@ -83,8 +84,11 @@ var renderMapPin = function (offer) {
 
   mapPin.style.left = offer.location.x - (mapPinImage.width / 2) + 'px';
   mapPin.style.top = offer.location.y - mapPinImage.height + 'px';
-  mapPin.querySelector('img').src = offer.author.avatar;
-  mapPin.querySelector('img').alt = offer.offer.title;
+  mapPinImage.src = offer.author.avatar;
+  mapPinImage.alt = offer.offer.title;
+  mapPin.addEventListener('click', function () {
+    showCard(offer);
+  });
 
   return mapPin;
 };
@@ -119,6 +123,46 @@ var removeChilds = function (parent) {
   }
 };
 
+var getCorrectName = function (number, arrWords) {
+  var n = Math.abs(number);
+  var counter = 0;
+  n %= 100;
+  if (n > 4 && n < 20 || n === 0 || n >= 5) {
+    counter = 2;
+  }
+  n %= 10;
+  if (n > 1 && n < 5) {
+    counter = 1;
+  }
+  return arrWords[counter];
+};
+
+var closeCard = function () {
+  var mapCard = map.querySelector('.map__card');
+  // Незнаю верно либо нет сделал еще один поиск кнопки Закрыть
+  var closePopup = map.querySelector('.popup__close');
+  if (mapCard) {
+    mapCard.remove();
+  }
+  var activePin = map.querySelector('.map__pin--active');
+  if (activePin) {
+    activePin.classList.remove('map__pin--active');
+  }
+  closePopup.removeEventListener('click', closeCard);
+  document.removeEventListener('keydown', cardCloseEsc);
+
+  // удаляем обработчик с документа (поверь, надо) :)) Чтобы его удалить, надо его сначала создать :)))
+};
+
+var cardCloseEsc = function (evt) {
+  var popup = document.querySelectorAll('.popup');
+  if (evt.keyCode === ESC_BUTTON) {
+    popup.forEach(function (elem) {
+      elem.remove();
+    });
+  }
+};
+
 var showCard = function (offer) {
 
   var mapCard = template.querySelector('.map__card').cloneNode(true);
@@ -138,24 +182,6 @@ var showCard = function (offer) {
     }
   };
 
-  // @TODO ДОПОЛНИЕЛЬНОЕ ЗАДАНИЕ насписать функцию сконения числительных для русского языка.
-  // Не вход принимат число, и три слова, а возвращает слово, наприме
-  // N, гость, гостя, гостей — где N, целое число
-
-  var getCorrectName = function (number, arrWords) {
-    var n = Math.abs(number);
-    var counter = 0;
-    n %= 100;
-    if (n > 4 && n < 20 || n === 0 || n >= 5) {
-      counter = 2;
-    }
-    n %= 10;
-    if (n > 1 && n < 5) {
-      counter = 1;
-    }
-    return arrWords[counter];
-  };
-
   var roomsNamesArray = ['комната', 'комнаты', 'комнат'];
   var guestsNamesArray = ['гость', 'гостя', 'гостей'];
   var currentRoomsName = getCorrectName(offer.offer.rooms, roomsNamesArray);
@@ -173,6 +199,12 @@ var showCard = function (offer) {
   removeChilds(photosBlock);
   photosBlock.appendChild(getArrayCollection(offer.offer.photos, renderPhotos));
 
+  var closePopup = map.querySelector('.popup__close');
+  closePopup.addEventListener('click', function () {
+    closeCard();
+  });
+  document.addEventListener('keydown', cardCloseEsc);
+
   return mapCard;
 };
 
@@ -185,9 +217,47 @@ var renderInit = function () {
     fragment.appendChild(renderMapPin(offers[i]));
   }
 
-  fragment.appendChild(showCard(offers[CARD_RENDER_NUMBER]));
+  // fragment.appendChild(showCard(offers[CARD_RENDER_NUMBER]));
 
   mapListElement.appendChild(fragment);
 };
 
-renderInit();
+
+var userForm = document.querySelector('.ad-form');
+
+var addDisableForm = function () {
+  var fieldsetDisable = userForm.querySelectorAll('fieldset');
+  for (var i = 0; i < fieldsetDisable.length; i++) {
+    fieldsetDisable[i].setAttribute('disabled', 'disabled');
+  }
+};
+addDisableForm();
+
+var removeDisableForm = function () {
+  var fieldsetEnable = userForm.querySelectorAll('fieldset');
+  for (var i = 0; i < fieldsetEnable.length; i++) {
+    fieldsetEnable[i].removeAttribute('disabled');
+  }
+};
+
+var mainMapPin = document.querySelector('.map__pin--main');
+
+var getFillInputValue = function () {
+  var field = userForm.querySelector('input[name="address"]');
+  field.value = 'Значение по умолчанию';
+};
+
+var mainPinMouseUpHandler = function (evt) {
+  activatePage(evt);
+  mainMapPin.removeEventListener('mouseup', mainPinMouseUpHandler);
+};
+
+mainMapPin.addEventListener('mouseup', mainPinMouseUpHandler);
+
+var activatePage = function (evt) {
+  map.classList.remove('map--faded');
+  userForm.classList.remove('ad-form--disabled');
+  removeDisableForm();
+  getFillInputValue(evt);
+  renderInit();
+};
