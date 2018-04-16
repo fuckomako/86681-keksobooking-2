@@ -87,6 +87,9 @@ var renderMapPin = function (offer) {
   mapPinImage.src = offer.author.avatar;
   mapPinImage.alt = offer.offer.title;
   mapPin.addEventListener('click', function () {
+    if (map.querySelector('.map__card')) {
+      closeCard();
+    }
     showCard(offer);
   });
 
@@ -138,23 +141,22 @@ var getCorrectName = function (number, arrWords) {
 };
 
 var closeCard = function () {
-  var mapCard = map.querySelector('.map__card');
-  // Незнаю верно либо нет сделал еще один поиск кнопки Закрыть
-  var closePopup = map.querySelector('.popup__close');
+  var mapCard = document.querySelector('.map__card');
+  var closePopup = mapCard.querySelector('.popup__close');
   if (mapCard) {
     mapCard.remove();
   }
-  var activePin = map.querySelector('.map__pin--active');
+  var activePin = mapCard.querySelector('.map__pin--active');
   if (activePin) {
     activePin.classList.remove('map__pin--active');
   }
   closePopup.removeEventListener('click', closeCard);
-  document.removeEventListener('keydown', cardCloseEsc);
+  document.removeEventListener('keydown', onCardCloseEsc);
 
   // удаляем обработчик с документа (поверь, надо) :)) Чтобы его удалить, надо его сначала создать :)))
 };
 
-var cardCloseEsc = function (evt) {
+var onCardCloseEsc = function (evt) {
   var popup = document.querySelectorAll('.popup');
   if (evt.keyCode === ESC_BUTTON) {
     popup.forEach(function (elem) {
@@ -199,11 +201,11 @@ var showCard = function (offer) {
   removeChilds(photosBlock);
   photosBlock.appendChild(getArrayCollection(offer.offer.photos, renderPhotos));
 
-  var closePopup = map.querySelector('.popup__close');
+  var closePopup = mapCard.querySelector('.popup__close');
   closePopup.addEventListener('click', function () {
     closeCard();
   });
-  document.addEventListener('keydown', cardCloseEsc);
+  document.addEventListener('keydown', onCardCloseEsc);
 
   return mapCard;
 };
@@ -242,9 +244,11 @@ var removeDisableForm = function () {
 
 var mainMapPin = document.querySelector('.map__pin--main');
 
-var getFillInputValue = function () {
+var getFillInputValue = function (evt) {
   var field = userForm.querySelector('input[name="address"]');
-  field.value = 'Значение по умолчанию';
+  var coordX = evt.pageX;
+  var coordY = evt.pageY;
+  field.value = coordX + ' , ' + coordY;
 };
 
 var mainPinMouseUpHandler = function (evt) {
