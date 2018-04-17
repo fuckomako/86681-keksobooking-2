@@ -265,3 +265,30 @@ var activatePage = function (evt) {
   setAddresValue(evt);
   renderInit();
 };
+
+
+// Пробую валидировать
+
+var APARTAMENT__TYPE__PRICE__LIST = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+
+var apartamentInputElement = userForm.querySelector('select[name="type"]');
+var priceInputElement = userForm.querySelector('input[name="price"]');
+apartamentInputElement.addEventListener('change', function () {
+  var minPrice = APARTAMENT__TYPE__PRICE__LIST[apartamentInputElement.value];
+  priceInputElement.min = minPrice;
+  priceInputElement.placeholder = minPrice;
+});
+
+var checkInInputElement = userForm.querySelector('select[name="timein"]');
+var checkOutInputElement = userForm.querySelector('select[name="timeout"]');
+checkInInputElement.addEventListener('change', function () {
+  checkOutInputElement.selectedIndex = checkInInputElement.selectedIndex;
+});
+checkOutInputElement.addEventListener('change', function () {
+  checkInInputElement.selectedIndex = checkOutInputElement.selectedIndex;
+});
