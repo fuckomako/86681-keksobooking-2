@@ -7,7 +7,6 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var NUMBER_OF_PINS = 8;
 var ESC_BUTTON = 27;
-// var CARD_RENDER_NUMBER = 0;
 
 var getRandomValue = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -151,17 +150,14 @@ var closeCard = function () {
     activePin.classList.remove('map__pin--active');
   }
   closePopup.removeEventListener('click', closeCard);
-  document.removeEventListener('keydown', onCardCloseEsc);
+  document.removeEventListener('keydown', cardCloseEscHandler);
 
   // удаляем обработчик с документа (поверь, надо) :)) Чтобы его удалить, надо его сначала создать :)))
 };
 
-var onCardCloseEsc = function (evt) {
-  var popup = document.querySelectorAll('.popup');
+var cardCloseEscHandler = function (evt) {
   if (evt.keyCode === ESC_BUTTON) {
-    popup.forEach(function (elem) {
-      elem.remove();
-    });
+    closeCard();
   }
 };
 
@@ -205,7 +201,7 @@ var showCard = function (offer) {
   closePopup.addEventListener('click', function () {
     closeCard();
   });
-  document.addEventListener('keydown', onCardCloseEsc);
+  document.addEventListener('keydown', cardCloseEscHandler);
 
   return mapCard;
 };
@@ -218,8 +214,6 @@ var renderInit = function () {
   for (var i = 0; i < offers.length; i++) {
     fragment.appendChild(renderMapPin(offers[i]));
   }
-
-  // fragment.appendChild(showCard(offers[CARD_RENDER_NUMBER]));
 
   mapListElement.appendChild(fragment);
 };
@@ -244,11 +238,17 @@ var removeDisableForm = function () {
 
 var mainMapPin = document.querySelector('.map__pin--main');
 
-var getFillInputValue = function (evt) {
-  var field = userForm.querySelector('input[name="address"]');
+var field = userForm.querySelector('input[name="address"]');
+
+var calculatePinCoords = function (evt) {
   var coordX = evt.pageX;
   var coordY = evt.pageY;
-  field.value = coordX + ' , ' + coordY;
+
+  return coordX + ' , ' + coordY;
+};
+
+var setAddresValue = function (evt) {
+  field.value = calculatePinCoords(evt);
 };
 
 var mainPinMouseUpHandler = function (evt) {
@@ -262,6 +262,6 @@ var activatePage = function (evt) {
   map.classList.remove('map--faded');
   userForm.classList.remove('ad-form--disabled');
   removeDisableForm();
-  getFillInputValue(evt);
+  setAddresValue(evt);
   renderInit();
 };
