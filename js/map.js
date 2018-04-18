@@ -293,36 +293,21 @@ checkOutInputElement.addEventListener('change', function () {
   checkInInputElement.selectedIndex = checkOutInputElement.selectedIndex;
 });
 
-var setDisabledValue = function (elements, values) {
-  for (var i = 0; i < elements.length; i++) {
-    elements[i].disabled = false;
-    if (values.indexOf(elements[i].value) > -1) {
-      elements[i].disabled = true;
+
+var roomsInputSelect = userForm.querySelector('select[name=rooms]');
+var capacityInputSelect = userForm.querySelector('select[name=capacity]');
+
+var roomsInputHandler = function () {
+  for (var i = 0; i < capacityInputSelect.length; i++) {
+    capacityInputSelect[i].disabled = true;
+    if (roomsInputSelect.value === '100' && capacityInputSelect[i].value === '0') {
+      capacityInputSelect[i].selected = true;
+      capacityInputSelect[i].disabled = false;
+    } else if (roomsInputSelect.value !== '100' && capacityInputSelect[i].value !== '0' && capacityInputSelect[i].value <= roomsInputSelect.value) {
+      capacityInputSelect[i].selected = true;
+      capacityInputSelect[i].disabled = false;
     }
   }
 };
 
-var roomsInputElement = userForm.querySelector('select[name="rooms"]');
-
-var roomsInputHandler = function (evt) {
-  var capacityInputSelect = userForm.querySelector('select[name="capacity"]');
-  var capacityOptionOptions = capacityInputSelect.querySelectorAll('option');
-  var roomsInputValue = evt.target.value;
-
-  switch (roomsInputValue) {
-    case '1':
-      setDisabledValue(capacityOptionOptions, ['0', '2', '3']);
-      break;
-    case '2':
-      setDisabledValue(capacityOptionOptions, ['0', '3']);
-      break;
-    case '3':
-      setDisabledValue(capacityOptionOptions, ['0']);
-      break;
-    case '100':
-      setDisabledValue(capacityOptionOptions, ['1', '2', '3']);
-      break;
-  }
-};
-
-roomsInputElement.addEventListener('change', roomsInputHandler);
+roomsInputSelect.addEventListener('change', roomsInputHandler);
