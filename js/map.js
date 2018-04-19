@@ -293,21 +293,44 @@ checkOutInputElement.addEventListener('change', function () {
   checkInInputElement.selectedIndex = checkOutInputElement.selectedIndex;
 });
 
-
-var roomsInputSelect = userForm.querySelector('select[name=rooms]');
-var capacityInputSelect = userForm.querySelector('select[name=capacity]');
-
-var roomsInputHandler = function () {
-  for (var i = 0; i < capacityInputSelect.length; i++) {
-    capacityInputSelect[i].disabled = true;
-    if (roomsInputSelect.value === '100' && capacityInputSelect[i].value === '0') {
-      capacityInputSelect[i].selected = true;
-      capacityInputSelect[i].disabled = false;
-    } else if (roomsInputSelect.value !== '100' && capacityInputSelect[i].value !== '0' && capacityInputSelect[i].value <= roomsInputSelect.value) {
-      capacityInputSelect[i].selected = true;
-      capacityInputSelect[i].disabled = false;
+var setDisabledValue = function (elements, values) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].disabled = false;
+    if (values.indexOf(elements[i].value) > -1) {
+      elements[i].disabled = true;
     }
   }
 };
 
-roomsInputSelect.addEventListener('change', roomsInputHandler);
+var roomsInputElement = userForm.querySelector('select[name="rooms"]');
+
+var calculateRoomsAndCapacity = function () {
+  var capacityInputSelect = userForm.querySelector('select[name="capacity"]');
+  var capacityOptionOptions = capacityInputSelect.querySelectorAll('option');
+  var roomsInputValue = roomsInputElement.value;
+
+  switch (roomsInputValue) {
+    case '1':
+      setDisabledValue(capacityOptionOptions, ['0', '2', '3']);
+      capacityOptionOptions[0].selected = true;
+      break;
+    case '2':
+      setDisabledValue(capacityOptionOptions, ['0', '3']);
+      capacityOptionOptions[1].selected = true;
+      break;
+    case '3':
+      setDisabledValue(capacityOptionOptions, ['0']);
+      capacityOptionOptions[2].selected = true;
+      break;
+    case '100':
+      setDisabledValue(capacityOptionOptions, ['1', '2', '3']);
+      capacityOptionOptions[3].selected = true;
+      break;
+  }
+};
+
+var roomsInputChangeHandler = function () {
+  calculateRoomsAndCapacity();
+};
+
+roomsInputElement.addEventListener('change', roomsInputChangeHandler);
