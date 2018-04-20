@@ -253,7 +253,6 @@ var setAddresValue = function (evt) {
 
 var mainPinMouseUpHandler = function (evt) {
   activatePage(evt);
-  mainMapPin.removeEventListener('mouseup', mainPinMouseUpHandler);
 };
 
 mainMapPin.addEventListener('mouseup', mainPinMouseUpHandler);
@@ -264,12 +263,10 @@ var activatePage = function (evt) {
   removeDisableForm();
   setAddresValue(evt);
   renderInit();
+  roomsInputChangeHandler();
 };
 
-
-// Пробую валидировать
-
-var APARTAMENT__TYPE__PRICE__LIST = {
+var roomsAndCapacityMap = {
   'bungalo': 0,
   'flat': 1000,
   'house': 5000,
@@ -279,7 +276,7 @@ var APARTAMENT__TYPE__PRICE__LIST = {
 var apartamentInputElement = userForm.querySelector('select[name="type"]');
 var priceInputElement = userForm.querySelector('input[name="price"]');
 apartamentInputElement.addEventListener('change', function () {
-  var minPrice = APARTAMENT__TYPE__PRICE__LIST[apartamentInputElement.value];
+  var minPrice = roomsAndCapacityMap[apartamentInputElement.value];
   priceInputElement.min = minPrice;
   priceInputElement.placeholder = minPrice;
 });
@@ -334,3 +331,29 @@ var roomsInputChangeHandler = function () {
 };
 
 roomsInputElement.addEventListener('change', roomsInputChangeHandler);
+
+
+// Сброс фильтров
+
+var resetButton = userForm.querySelector('.ad-form__reset');
+
+var deletePins = function () {
+  var buttons = mapListElement.querySelectorAll('button');
+  for (var i = 1; i < buttons.length; i++) {
+    mapListElement.removeChild(buttons[i]);
+  }
+};
+
+var resetPage = function () {
+  map.classList.add('map--faded');
+  userForm.classList.add('ad-form--disabled');
+  addDisableForm();
+  deletePins();
+  userForm.reset();
+};
+
+var buttonResetClickHandler = function () {
+  resetPage();
+};
+
+resetButton.addEventListener('click', buttonResetClickHandler);
