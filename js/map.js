@@ -253,7 +253,6 @@ var setAddresValue = function (evt) {
 
 var mainPinMouseUpHandler = function (evt) {
   activatePage(evt);
-  mainMapPin.removeEventListener('mouseup', mainPinMouseUpHandler);
 };
 
 mainMapPin.addEventListener('mouseup', mainPinMouseUpHandler);
@@ -264,4 +263,94 @@ var activatePage = function (evt) {
   removeDisableForm();
   setAddresValue(evt);
   renderInit();
+  roomsInputChangeHandler();
 };
+
+var roomsAndCapacityMap = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
+};
+
+var apartamentInputElement = userForm.querySelector('select[name="type"]');
+var priceInputElement = userForm.querySelector('input[name="price"]');
+apartamentInputElement.addEventListener('change', function () {
+  var minPrice = roomsAndCapacityMap[apartamentInputElement.value];
+  priceInputElement.min = minPrice;
+  priceInputElement.placeholder = minPrice;
+});
+
+var checkInInputElement = userForm.querySelector('select[name="timein"]');
+var checkOutInputElement = userForm.querySelector('select[name="timeout"]');
+checkInInputElement.addEventListener('change', function () {
+  checkOutInputElement.selectedIndex = checkInInputElement.selectedIndex;
+});
+checkOutInputElement.addEventListener('change', function () {
+  checkInInputElement.selectedIndex = checkOutInputElement.selectedIndex;
+});
+
+var setDisabledValue = function (elements, values) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].disabled = false;
+    if (values.indexOf(elements[i].value) > -1) {
+      elements[i].disabled = true;
+    }
+  }
+};
+
+var roomsInputElement = userForm.querySelector('select[name="rooms"]');
+
+var calculateRoomsAndCapacity = function () {
+  var capacityInputSelect = userForm.querySelector('select[name="capacity"]');
+  var capacityOptionOptions = capacityInputSelect.querySelectorAll('option');
+  var roomsInputValue = roomsInputElement.value;
+
+  switch (roomsInputValue) {
+    case '1':
+      setDisabledValue(capacityOptionOptions, ['0', '2', '3']);
+      capacityOptionOptions[0].selected = true;
+      break;
+    case '2':
+      setDisabledValue(capacityOptionOptions, ['0', '3']);
+      capacityOptionOptions[1].selected = true;
+      break;
+    case '3':
+      setDisabledValue(capacityOptionOptions, ['0']);
+      capacityOptionOptions[2].selected = true;
+      break;
+    case '100':
+      setDisabledValue(capacityOptionOptions, ['1', '2', '3']);
+      capacityOptionOptions[3].selected = true;
+      break;
+  }
+};
+
+var roomsInputChangeHandler = function () {
+  calculateRoomsAndCapacity();
+};
+
+roomsInputElement.addEventListener('change', roomsInputChangeHandler);
+
+
+// Сброс фильтров
+
+var deletePins = function () {
+  var buttons = mapListElement.querySelectorAll('button');
+  for (var i = 1; i < buttons.length; i++) {
+    mapListElement.removeChild(buttons[i]);
+  }
+};
+
+var resetPage = function () {
+  map.classList.add('map--faded');
+  userForm.classList.add('ad-form--disabled');
+  addDisableForm();
+  deletePins();
+};
+
+var buttonResetClickHandler = function () {
+  resetPage();
+};
+
+userForm.addEventListener('reset', buttonResetClickHandler);
