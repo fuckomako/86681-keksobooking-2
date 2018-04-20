@@ -335,8 +335,6 @@ roomsInputElement.addEventListener('change', roomsInputChangeHandler);
 
 // Сброс фильтров
 
-var resetButton = userForm.querySelector('.ad-form__reset');
-
 var deletePins = function () {
   var buttons = mapListElement.querySelectorAll('button');
   for (var i = 1; i < buttons.length; i++) {
@@ -349,11 +347,10 @@ var resetPage = function () {
   userForm.classList.add('ad-form--disabled');
   addDisableForm();
   deletePins();
-  userForm.reset();
 };
 
 var buttonResetClickHandler = function () {
   resetPage();
 };
 
-resetButton.addEventListener('click', buttonResetClickHandler);
+userForm.addEventListener('reset', buttonResetClickHandler);
