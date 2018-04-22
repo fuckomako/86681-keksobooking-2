@@ -13,6 +13,8 @@ var LIMIT_TOP_Y = 150;
 var LIMIT_BOTTOM_Y = 500;
 var LIMIT_LEFT_X = 0;
 var LIMIT_RIGHT_X = 1200;
+var MAIN_PIN_DEFAULT_X = 570;
+var MAIN_PIN_DEFAULT_Y = 375;
 
 var getRandomValue = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -419,3 +421,14 @@ var pinDragHandler = function (evt) {
 
 mainMapPin.addEventListener('mouseup', pinDragHandler);
 mainMapPin.addEventListener('mousedown', pinDragHandler);
+
+var setDefaultValueForm = function () {
+  mainMapPin.style.left = MAIN_PIN_DEFAULT_X + 'px';
+  mainMapPin.style.top = MAIN_PIN_DEFAULT_Y + 'px';
+};
+
+var disablePageHandler = function () {
+  setDefaultValueForm();
+};
+
+userForm.addEventListener('click', disablePageHandler);
