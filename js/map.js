@@ -7,6 +7,14 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var NUMBER_OF_PINS = 8;
 var ESC_BUTTON = 27;
+var MAIN_PIN_WIDTH = 32;
+var MAIN_PIN_HEIGHT = 84;
+var LIMIT_TOP_Y = 150;
+var LIMIT_BOTTOM_Y = 500;
+var LIMIT_LEFT_X = 0;
+var LIMIT_RIGHT_X = 1200;
+var MAIN_PIN_DEFAULT_X = 570;
+var MAIN_PIN_DEFAULT_Y = 375;
 
 var getRandomValue = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -238,35 +246,22 @@ var removeDisableForm = function () {
 
 var mainMapPin = document.querySelector('.map__pin--main');
 
-var field = userForm.querySelector('input[name="address"]');
-
-var calculatePinCoords = function (evt) {
-  var coordX = evt.pageX;
-  var coordY = evt.pageY;
-
-  return coordX + ' , ' + coordY;
-};
-
-var setAddresValue = function (evt) {
-  field.value = calculatePinCoords(evt);
-};
-
 var mainPinMouseUpHandler = function (evt) {
   activatePage(evt);
 };
 
 mainMapPin.addEventListener('mouseup', mainPinMouseUpHandler);
 
-var activatePage = function (evt) {
+var activatePage = function () {
   map.classList.remove('map--faded');
   userForm.classList.remove('ad-form--disabled');
   removeDisableForm();
-  setAddresValue(evt);
   renderInit();
   roomsInputChangeHandler();
+  setAddressValue();
 };
 
-var roomsAndCapacityMap = {
+var roomsAndCapatokyoMap = {
   'bungalo': 0,
   'flat': 1000,
   'house': 5000,
@@ -276,7 +271,7 @@ var roomsAndCapacityMap = {
 var apartamentInputElement = userForm.querySelector('select[name="type"]');
 var priceInputElement = userForm.querySelector('input[name="price"]');
 apartamentInputElement.addEventListener('change', function () {
-  var minPrice = roomsAndCapacityMap[apartamentInputElement.value];
+  var minPrice = roomsAndCapatokyoMap[apartamentInputElement.value];
   priceInputElement.min = minPrice;
   priceInputElement.placeholder = minPrice;
 });
@@ -332,7 +327,6 @@ var roomsInputChangeHandler = function () {
 
 roomsInputElement.addEventListener('change', roomsInputChangeHandler);
 
-
 // Сброс фильтров
 
 var deletePins = function () {
@@ -354,3 +348,87 @@ var buttonResetClickHandler = function () {
 };
 
 userForm.addEventListener('reset', buttonResetClickHandler);
+
+// Реализация перетаскивания метки
+
+var field = document.querySelector('#address');
+var setAddressValue = function () {
+  field.value = getPinLocation(mainMapPin.style.left, MAIN_PIN_WIDTH) + ', ' + getPinLocation(mainMapPin.style.top, MAIN_PIN_HEIGHT);
+};
+
+var getPinLocation = function (pos, gap) {
+  return Math.round(parseInt(pos.split('px', 1), 10)) + Math.round(gap);
+};
+
+var pinDragHandler = function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var mouseMoveHandler = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    mainMapPin.style.left = (mainMapPin.offsetLeft - shift.x) + 'px';
+    mainMapPin.style.top = (mainMapPin.offsetTop - shift.y) + 'px';
+
+    setAddressValue();
+
+    var mainMapPinLeftCoord = parseInt(mainMapPin.style.left.split('px')[0], 10);
+    var mainMapPinTopCoord = parseInt(mainMapPin.style.top.split('px')[0], 10);
+
+    if (mainMapPinTopCoord < LIMIT_TOP_Y - MAIN_PIN_HEIGHT) {
+      mainMapPin.style.top = LIMIT_TOP_Y - MAIN_PIN_HEIGHT + 'px';
+    }
+
+    if (mainMapPinTopCoord > LIMIT_BOTTOM_Y - MAIN_PIN_HEIGHT) {
+      mainMapPin.style.top = LIMIT_BOTTOM_Y - MAIN_PIN_HEIGHT + 'px';
+    }
+
+    if (mainMapPinLeftCoord < LIMIT_LEFT_X - MAIN_PIN_WIDTH) {
+      mainMapPin.style.left = LIMIT_LEFT_X - MAIN_PIN_WIDTH + 'px';
+    }
+
+    if (mainMapPinLeftCoord > LIMIT_RIGHT_X - MAIN_PIN_WIDTH) {
+      mainMapPin.style.left = LIMIT_RIGHT_X - MAIN_PIN_WIDTH + 'px';
+    }
+
+  };
+
+  var mouseUpHandler = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
+  };
+
+  document.addEventListener('mousemove', mouseMoveHandler);
+  document.addEventListener('mouseup', mouseUpHandler);
+
+};
+
+mainMapPin.addEventListener('mouseup', pinDragHandler);
+mainMapPin.addEventListener('mousedown', pinDragHandler);
+
+var setDefaultValueForm = function () {
+  mainMapPin.style.left = MAIN_PIN_DEFAULT_X + 'px';
+  mainMapPin.style.top = MAIN_PIN_DEFAULT_Y + 'px';
+};
+
+var disablePageHandler = function () {
+  setDefaultValueForm();
+};
+
+userForm.addEventListener('click', disablePageHandler);
