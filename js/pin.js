@@ -1,16 +1,7 @@
 'use strict';
 
 (function () {
-  window.addPins = function (numberOfObjects) {
-    var offers = [];
-
-    for (var i = 0; i < numberOfObjects; i++) {
-      offers.push(window.generateOffer(i));
-    }
-
-    return offers;
-  };
-  var renderMapPin = function (offer) {
+  window.renderMapPin = function (offer) {
     var map = document.querySelector('.map');
     var template = document.querySelector('template').content;
     var mapPin = template.querySelector('.map__pin').cloneNode(true);
@@ -22,23 +13,12 @@
     mapPinImage.alt = offer.offer.title;
     mapPin.addEventListener('click', function () {
       if (map.querySelector('.map__card')) {
-        window.closeCard();
+        window.card.closeCard();
       }
       window.card.showCard(offer);
     });
 
     return mapPin;
-  };
-
-  window.renderInit = function () {
-
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < window.offers.length; i++) {
-      fragment.appendChild(renderMapPin(window.offers[i]));
-    }
-
-    window.mapListElement.appendChild(fragment);
   };
 
 })();

@@ -66,4 +66,18 @@
   };
 
   roomsInputElement.addEventListener('change', window.roomsInputChangeHandler);
+
+  var successMessage = document.querySelector('.success');
+  userForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(userForm), function () {
+      successMessage.classList.remove('hidden');
+    });
+    evt.preventDefault();
+  });
+  var successMessageRemove = function () {
+    if (successMessage) {
+      successMessage.classList.add('hidden');
+    }
+  };
+  document.addEventListener('keydown', successMessageRemove);
 })();
