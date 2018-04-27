@@ -25,6 +25,7 @@
   var mainPinMouseUpHandler = function (evt) {
     activatePage(evt);
     window.backend.load(loadHanler, errorHandler);
+    mainMapPin.removeEventListener('mouseup', mainPinMouseUpHandler);
   };
 
   mainMapPin.addEventListener('mouseup', mainPinMouseUpHandler);
