@@ -8,16 +8,19 @@
     'palace': 10000
   };
   var userForm = document.querySelector('.ad-form');
+  var inputElements = userForm.querySelectorAll('input');
   var apartamentInputElement = userForm.querySelector('select[name="type"]');
   var priceInputElement = userForm.querySelector('input[name="price"]');
+  var checkInInputElement = userForm.querySelector('select[name="timein"]');
+  var checkOutInputElement = userForm.querySelector('select[name="timeout"]');
+  var roomsInputElement = userForm.querySelector('select[name="rooms"]');
+
   apartamentInputElement.addEventListener('change', function () {
     var minPrice = roomsAndCapatokyoMap[apartamentInputElement.value];
     priceInputElement.min = minPrice;
     priceInputElement.placeholder = minPrice;
   });
 
-  var checkInInputElement = userForm.querySelector('select[name="timein"]');
-  var checkOutInputElement = userForm.querySelector('select[name="timeout"]');
   checkInInputElement.addEventListener('change', function () {
     checkOutInputElement.selectedIndex = checkInInputElement.selectedIndex;
   });
@@ -33,8 +36,6 @@
       }
     }
   };
-
-  var roomsInputElement = userForm.querySelector('select[name="rooms"]');
 
   var calculateRoomsAndCapacity = function () {
     var capacityInputSelect = userForm.querySelector('select[name="capacity"]');
@@ -67,10 +68,41 @@
 
   roomsInputElement.addEventListener('change', window.roomsInputChangeHandler);
 
+  var checkDisabledOptions = function () {
+    var selectElements = userForm.querySelectorAll('select');
+    var isValid = true;
+
+    for (var i = 0; i < selectElements.length; i++) {
+      var selectedOptionElement = selectElements[i].selectedOptions[0];
+      window.util.resetInvalidSelectedInput(selectElements[i]);
+
+      if (selectedOptionElement.disabled) {
+        isValid = false;
+        window.util.selectInvalidInput(selectElements[i]);
+      }
+    }
+
+    return isValid;
+  };
+
+  for (var i = 0; i < inputElements.length; i++) {
+    inputElements[i].addEventListener('invalid', function (evt) {
+      window.util.selectInvalidInput(evt.target);
+    });
+  }
+
   var successMessage = document.querySelector('.success');
+  var mainMapPin = document.querySelector('.map__pin--main');
   userForm.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(userForm), function () {
+      for (var k = 0; k < inputElements.length; k++) {
+        window.util.resetInvalidSelectedInput(inputElements[k]);
+        checkDisabledOptions();
+      }
+      mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
       successMessage.classList.remove('hidden');
+      window.util.resetPage();
+      userForm.reset();
     });
     evt.preventDefault();
   });

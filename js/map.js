@@ -7,53 +7,27 @@
   var userForm = document.querySelector('.ad-form');
   var mainMapPin = document.querySelector('.map__pin--main');
 
-  var addDisableForm = function () {
-    var fieldsetDisable = userForm.querySelectorAll('fieldset');
-    for (var i = 0; i < fieldsetDisable.length; i++) {
-      fieldsetDisable[i].setAttribute('disabled', 'disabled');
-    }
-  };
-  addDisableForm();
-
-  var removeDisableForm = function () {
-    var fieldsetEnable = userForm.querySelectorAll('fieldset');
-    for (var i = 0; i < fieldsetEnable.length; i++) {
-      fieldsetEnable[i].removeAttribute('disabled');
-    }
-  };
-
-  var mainPinMouseUpHandler = function (evt) {
+  window.mainPinMouseUpHandler = function (evt) {
     activatePage(evt);
-    window.backend.load(loadHanler, errorHandler);
-    mainMapPin.removeEventListener('mouseup', mainPinMouseUpHandler);
+    var buttonElement = document.querySelectorAll('.map__pins');
+    if (buttonElement.length < 2) {
+      window.backend.load(loadHanler, errorHandler);
+    }
+    mainMapPin.removeEventListener('mouseup', window.mainPinMouseUpHandler);
   };
 
-  mainMapPin.addEventListener('mouseup', mainPinMouseUpHandler);
+  mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
 
   var activatePage = function () {
     map.classList.remove('map--faded');
     userForm.classList.remove('ad-form--disabled');
-    removeDisableForm();
+    window.util.removeDisableForm();
     window.roomsInputChangeHandler();
     window.setAddressValue();
   };
 
-  var deletePins = function () {
-    var buttons = window.mapListElement.querySelectorAll('button');
-    for (var i = 1; i < buttons.length; i++) {
-      window.mapListElement.removeChild(buttons[i]);
-    }
-  };
-
-  var resetPage = function () {
-    map.classList.add('map--faded');
-    userForm.classList.add('ad-form--disabled');
-    addDisableForm();
-    deletePins();
-  };
-
   var buttonResetClickHandler = function () {
-    resetPage();
+    window.util.resetPage();
   };
 
   userForm.addEventListener('reset', buttonResetClickHandler);
