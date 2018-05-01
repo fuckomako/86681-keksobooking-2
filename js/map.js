@@ -44,13 +44,15 @@
   userForm.addEventListener('click', disablePageHandler);
 
   var loadHanler = function (pins) {
+    window.pins = pins;
     var fragment = document.createDocumentFragment();
     var buttonElement = document.querySelector('.map__pins');
 
     for (var i = 0; i < pins.length; i++) {
-      fragment.appendChild(window.renderMapPin(pins[i]));
+      fragment.appendChild(window.renderMapPin(pins[i], i < 5));
     }
     buttonElement.appendChild(fragment);
+
   };
 
   var errorHandler = function (errorMessage) {
