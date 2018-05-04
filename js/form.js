@@ -1,12 +1,13 @@
 'use strict';
 
 (function () {
-  var roomsAndCapatokyoMap = {
+  var roomsType = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
     'palace': 10000
   };
+  var mainMapPin = document.querySelector('.map__pin--main');
   var userForm = document.querySelector('.ad-form');
   var inputElements = userForm.querySelectorAll('input');
   var apartamentInputElement = userForm.querySelector('select[name="type"]');
@@ -14,9 +15,10 @@
   var checkInInputElement = userForm.querySelector('select[name="timein"]');
   var checkOutInputElement = userForm.querySelector('select[name="timeout"]');
   var roomsInputElement = userForm.querySelector('select[name="rooms"]');
+  var successMessage = document.querySelector('.success');
 
   apartamentInputElement.addEventListener('change', function () {
-    var minPrice = roomsAndCapatokyoMap[apartamentInputElement.value];
+    var minPrice = roomsType[apartamentInputElement.value];
     priceInputElement.min = minPrice;
     priceInputElement.placeholder = minPrice;
   });
@@ -91,8 +93,6 @@
     });
   }
 
-  var successMessage = document.querySelector('.success');
-  var mainMapPin = document.querySelector('.map__pin--main');
   userForm.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(userForm), function () {
       for (var k = 0; k < inputElements.length; k++) {
@@ -105,11 +105,12 @@
       userForm.reset();
     });
     evt.preventDefault();
+    document.addEventListener('keydown', successMessageRemove);
   });
   var successMessageRemove = function () {
     if (successMessage) {
       successMessage.classList.add('hidden');
     }
   };
-  document.addEventListener('keydown', successMessageRemove);
+  document.removeEventListener('keydown', successMessageRemove);
 })();

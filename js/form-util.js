@@ -4,6 +4,7 @@
   var map = document.querySelector('.map');
   var userForm = document.querySelector('.ad-form');
   var mainMapPin = document.querySelector('.map__pin--main');
+
   var addDisableForm = function () {
     var fieldsetDisable = userForm.querySelectorAll('fieldset');
     for (var i = 0; i < fieldsetDisable.length; i++) {
@@ -18,7 +19,8 @@
       fieldsetEnable[i].removeAttribute('disabled');
     }
   };
-  var deletePins = function () {
+
+  var removePins = function () {
     var buttons = window.mapListElement.querySelectorAll('button');
     for (var i = 1; i < buttons.length; i++) {
       window.mapListElement.removeChild(buttons[i]);
@@ -29,7 +31,7 @@
     map.classList.add('map--faded');
     userForm.classList.add('ad-form--disabled');
     addDisableForm();
-    deletePins();
+    removePins();
     mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
   };
 
