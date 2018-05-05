@@ -24,9 +24,9 @@
 
   var getCollectionOfArray = function (array, renderFunction) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < array.length; i++) {
-      fragment.appendChild(renderFunction(array[i]));
-    }
+    array.forEach(function (it) {
+      fragment.appendChild(renderFunction(it));
+    });
     return fragment;
   };
 
@@ -55,7 +55,7 @@
       closeCard();
     }
   };
-  
+
   var showCard = function (offer) {
     var mapCard = template.querySelector('.map__card').cloneNode(true);
     map.insertBefore(mapCard, document.querySelector('.map__filters-container'));

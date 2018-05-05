@@ -7,24 +7,24 @@
 
   var addDisableForm = function () {
     var fieldsetDisable = userForm.querySelectorAll('fieldset');
-    for (var i = 0; i < fieldsetDisable.length; i++) {
-      fieldsetDisable[i].setAttribute('disabled', 'disabled');
-    }
+    fieldsetDisable.forEach(function (it) {
+      it.setAttribute('disabled', 'disabled');
+    });
   };
   addDisableForm();
 
   var removeDisableForm = function () {
     var fieldsetEnable = userForm.querySelectorAll('fieldset');
-    for (var i = 0; i < fieldsetEnable.length; i++) {
-      fieldsetEnable[i].removeAttribute('disabled');
-    }
+    fieldsetEnable.forEach(function (it) {
+      it.removeAttribute('disabled');
+    });
   };
 
   var removePins = function () {
     var buttons = window.mapListElement.querySelectorAll('button');
-    for (var i = 1; i < buttons.length; i++) {
-      window.mapListElement.removeChild(buttons[i]);
-    }
+    buttons.forEach(function (it) {
+      window.mapListElement.removeChild(it);
+    });
   };
 
   var resetPage = function () {
@@ -45,9 +45,9 @@
 
   var resetAllInvalidSelected = function () {
     var invalidInputs = document.querySelectorAll('.invalid-value-input');
-    for (var i = 0; i < invalidInputs.length; i++) {
-      resetInvalidSelectedInput(invalidInputs[i]);
-    }
+    invalidInputs.forEach(function (it) {
+      resetInvalidSelectedInput(it);
+    });
   };
 
   window.util = {

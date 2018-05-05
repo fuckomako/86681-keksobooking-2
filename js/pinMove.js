@@ -9,7 +9,7 @@
   var LIMIT_RIGHT_X = 1200;
   var mainMapPin = document.querySelector('.map__pin--main');
   var field = document.querySelector('#address');
-  
+
   window.setAddressValue = function () {
     field.value = getPinLocation(mainMapPin.style.left, MAIN_PIN_WIDTH) + ', ' + getPinLocation(mainMapPin.style.top, MAIN_PIN_HEIGHT);
   };
