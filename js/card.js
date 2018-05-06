@@ -94,7 +94,7 @@
     var currentGuestsName = getCorrectName(offer.offer.guests, guests);
     mapCard.querySelector('.popup__title').textContent = offer.offer.title;
     mapCard.querySelector('.popup__text--address').textContent = offer.offer.address;
-    mapCard.querySelector('.popup__text--price').textContent = offer.offer.price + ' &#x20bd;/ночь';
+    mapCard.querySelector('.popup__text--price').innerHTML = offer.offer.price + ' &#x20bd;/ночь';
     mapCard.querySelector('.popup__type').textContent = getValueTypeOffer();
     mapCard.querySelector('.popup__text--capacity').textContent = offer.offer.rooms + ' ' + currentRoomsName + ' для ' + offer.offer.guests + ' ' + currentGuestsName;
     mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
