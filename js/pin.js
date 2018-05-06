@@ -3,8 +3,8 @@
 (function () {
   window.renderMapPin = function (offer, isVisible) {
     var map = document.querySelector('.map');
-    var template = document.querySelector('template').content;
-    var mapPin = template.querySelector('.map__pin').cloneNode(true);
+    var mapTemplate = document.querySelector('template').content;
+    var mapPin = mapTemplate.querySelector('.map__pin').cloneNode(true);
     var mapPinImage = mapPin.querySelector('img');
 
     mapPin.style.left = (offer.location.x - 25) + 'px';

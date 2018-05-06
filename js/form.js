@@ -1,12 +1,13 @@
 'use strict';
 
 (function () {
-  var roomsAndCapatokyoMap = {
+  var roomsType = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
     'palace': 10000
   };
+  var mainMapPin = document.querySelector('.map__pin--main');
   var userForm = document.querySelector('.ad-form');
   var inputElements = userForm.querySelectorAll('input');
   var apartamentInputElement = userForm.querySelector('select[name="type"]');
@@ -14,9 +15,10 @@
   var checkInInputElement = userForm.querySelector('select[name="timein"]');
   var checkOutInputElement = userForm.querySelector('select[name="timeout"]');
   var roomsInputElement = userForm.querySelector('select[name="rooms"]');
+  var successMessage = document.querySelector('.success');
 
   apartamentInputElement.addEventListener('change', function () {
-    var minPrice = roomsAndCapatokyoMap[apartamentInputElement.value];
+    var minPrice = roomsType[apartamentInputElement.value];
     priceInputElement.min = minPrice;
     priceInputElement.placeholder = minPrice;
   });
@@ -29,12 +31,12 @@
   });
 
   var setDisabledValue = function (elements, values) {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].disabled = false;
-      if (values.indexOf(elements[i].value) > -1) {
-        elements[i].disabled = true;
+    elements.forEach(function (it) {
+      it.disabled = false;
+      if (values.indexOf(it.value) > -1) {
+        it.disabled = true;
       }
-    }
+    });
   };
 
   var calculateRoomsAndCapacity = function () {
@@ -72,15 +74,14 @@
     var selectElements = userForm.querySelectorAll('select');
     var isValid = true;
 
-    for (var i = 0; i < selectElements.length; i++) {
-      var selectedOptionElement = selectElements[i].selectedOptions[0];
-      window.util.resetInvalidSelectedInput(selectElements[i]);
-
+    selectElements.forEach(function (it) {
+      var selectedOptionElement = it.selectedOptions[0];
+      window.util.resetInvalidSelectedInput(it);
       if (selectedOptionElement.disabled) {
         isValid = false;
-        window.util.selectInvalidInput(selectElements[i]);
+        window.util.selectInvalidInput(it);
       }
-    }
+    });
 
     return isValid;
   };
@@ -91,8 +92,6 @@
     });
   }
 
-  var successMessage = document.querySelector('.success');
-  var mainMapPin = document.querySelector('.map__pin--main');
   userForm.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(userForm), function () {
       for (var k = 0; k < inputElements.length; k++) {
@@ -105,11 +104,12 @@
       userForm.reset();
     });
     evt.preventDefault();
+    document.addEventListener('keydown', successMessageRemove);
   });
   var successMessageRemove = function () {
     if (successMessage) {
       successMessage.classList.add('hidden');
     }
   };
-  document.addEventListener('keydown', successMessageRemove);
+  document.removeEventListener('keydown', successMessageRemove);
 })();
