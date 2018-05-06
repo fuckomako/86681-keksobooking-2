@@ -65,11 +65,9 @@
 
   var filterFeatures = function (pin) {
     var mapFeatures = formFilters.querySelectorAll('input:checked');
-    var trueFeatures = true;
 
     return Array.prototype.every.call(mapFeatures, function (it) {
-      trueFeatures = pin.offer.features.indexOf(it.value) !== -1;
-      return trueFeatures;
+      return pin.offer.features.indexOf(it.value) !== -1;
     });
   };
 
