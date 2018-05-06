@@ -64,19 +64,13 @@
   };
 
   var filterFeatures = function (pin) {
+    var mapFeatures = formFilters.querySelectorAll('input:checked');
     var trueFeatures = true;
-    if (housingFeatures.length === 0) {
-      trueFeatures = true;
-    } else {
-      housingFeatures.forEach(function (it) {
-        if (it.checked) {
-          if (pin.offer.features.indexOf(it.value) === -1) {
-            trueFeatures = false;
-          }
-        }
-      });
-    }
-    return trueFeatures;
+
+    return Array.prototype.every.call(mapFeatures, function (it) {
+      trueFeatures = pin.offer.features.indexOf(it.value) !== -1;
+      return trueFeatures;
+    });
   };
 
   housingPrice.addEventListener('change', acceptFilter);
@@ -87,4 +81,5 @@
   housingFeatures.forEach(function (it) {
     it.addEventListener('change', acceptFilter);
   });
+
 }());
