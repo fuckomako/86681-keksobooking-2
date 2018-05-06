@@ -21,7 +21,7 @@
   };
 
   var removePins = function () {
-    var buttons = window.mapListElement.querySelectorAll('button');
+    var buttons = window.mapListElement.querySelectorAll('.map__pin:not(.map__pin--main)');
     buttons.forEach(function (it) {
       window.mapListElement.removeChild(it);
     });
@@ -32,6 +32,7 @@
     userForm.classList.add('ad-form--disabled');
     addDisableForm();
     removePins();
+    window.card.closeCard();
     mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
   };
 
