@@ -7,16 +7,16 @@
   var userForm = document.querySelector('.ad-form');
   var mainMapPin = document.querySelector('.map__pin--main');
 
-  window.mainPinMouseUpHandler = function (evt) {
-    window.activatePage(evt);
-    var buttonElement = document.querySelectorAll('.map__pins');
-    if (buttonElement.length < 2) {
-      window.backend.load(loadHandler, window.errorHandler);
+  window.mainPinMouseUpHandler = function () {
+    window.activatePage();
+    var buttons = document.querySelectorAll('.map__pins');
+    if (buttons.length < 2) {
+      window.backend.load(loadHandler, window.error.errorHandler);
     }
-    mainMapPin.removeEventListener('mouseup', window.mainPinMouseUpHandler);
+    mainMapPin.removeEventListener('mousedown', window.mainPinMouseUpHandler);
   };
 
-  mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
+  mainMapPin.addEventListener('mousedown', window.mainPinMouseUpHandler);
 
   var buttonResetClickHandler = function () {
     window.util.resetPage();
@@ -37,15 +37,15 @@
 
   var loadHandler = function (pins) {
     window.pins = pins;
-    var copyPins = pins.slice(0);
+    var copyPins = pins.slice();
     var fragment = document.createDocumentFragment();
-    var buttonElement = document.querySelector('.map__pins');
+    var buttons = document.querySelector('.map__pins');
 
     copyPins.forEach(function (it, pin) {
       fragment.appendChild(window.renderMapPin(it, pin < PINS_LIMIT));
     });
 
-    buttonElement.appendChild(fragment);
+    buttons.appendChild(fragment);
   };
 
 })();

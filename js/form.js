@@ -86,26 +86,28 @@
     return isValid;
   };
 
-  for (var i = 0; i < inputElements.length; i++) {
-    inputElements[i].addEventListener('invalid', function (evt) {
+  inputElements.forEach(function (it) {
+    it.addEventListener('invalid', function (evt) {
       window.util.selectInvalidInput(evt.target);
     });
-  }
+  });
+
+  var successHandler = function () {
+    inputElements.forEach(function (it) {
+      window.util.resetInvalidSelectedInput(it);
+      checkDisabledOptions();
+    });
+    mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
+    successMessage.classList.remove('hidden');
+    window.util.resetPage();
+  };
 
   userForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(userForm), function () {
-      for (var k = 0; k < inputElements.length; k++) {
-        window.util.resetInvalidSelectedInput(inputElements[k]);
-        checkDisabledOptions();
-      }
-      mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
-      successMessage.classList.remove('hidden');
-      window.util.resetPage();
-      userForm.reset();
-    });
+    window.backend.save(new FormData(userForm), successHandler, window.error.errorHandler);
     evt.preventDefault();
     document.addEventListener('keydown', successMessageRemove);
   });
+
   var successMessageRemove = function () {
     if (successMessage) {
       successMessage.classList.add('hidden');

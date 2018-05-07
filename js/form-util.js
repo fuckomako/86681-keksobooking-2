@@ -4,6 +4,7 @@
   var map = document.querySelector('.map');
   var userForm = document.querySelector('.ad-form');
   var mainMapPin = document.querySelector('.map__pin--main');
+  var filterForm = document.querySelector('.map__filters');
 
   var addDisableForm = function () {
     var fieldsetDisable = userForm.querySelectorAll('fieldset');
@@ -28,11 +29,16 @@
   };
 
   var resetPage = function () {
+    var openedCard = map.querySelector('.map__card');
     map.classList.add('map--faded');
     userForm.classList.add('ad-form--disabled');
+    if (openedCard) {
+      openedCard.remove();
+    }
     addDisableForm();
     removePins();
-    window.card.closeCard();
+    userForm.reset();
+    filterForm.reset();
     mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
   };
 

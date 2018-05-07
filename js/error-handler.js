@@ -1,14 +1,24 @@
 'use strict';
+
 (function () {
-  window.errorHandler = function (errorMessage) {
-    var divElement = document.createElement('div');
-    divElement.style = 'z-index: 100; margin: 0 auto; color: #fff; text-align: center; background-color: red;';
-    divElement.style.position = 'absolute';
-    divElement.style.left = 0;
-    divElement.style.right = 0;
-    divElement.style.fontSize = '30px';
-    divElement.classList.add('error');
-    divElement.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', divElement);
+  var TIME = 15000;
+
+  var template = document.querySelector('template');
+  var errorTemplate = template.content.querySelector('.error').cloneNode(true);
+
+  window.error = {
+    errorHandler: function (errorTitle, errorText) {
+
+      errorTemplate.querySelector('.error__title').textContent = errorTitle;
+      errorTemplate.querySelector('.error__message').textContent = errorText;
+
+      document.body.insertAdjacentElement('afterbegin', errorTemplate);
+
+      var errorPopup = document.querySelector('.error');
+      var removeErrorPopup = function () {
+        errorPopup.remove();
+      };
+      setTimeout(removeErrorPopup, TIME);
+    }
   };
 })();

@@ -43,7 +43,7 @@
     if (housingType.value === 'any') {
       return true;
     } else {
-      return pin.offer.type === housingType.value; // Не окргуляем в поле stirng
+      return pin.offer.type === housingType.value;
     }
   };
 

@@ -38,7 +38,6 @@
 
   var closeCard = function () {
     var mapCard = document.querySelector('.map__card');
-    var closePopup = mapCard.querySelector('.popup__close');
     if (mapCard) {
       mapCard.remove();
     }
@@ -46,7 +45,8 @@
     if (activePin) {
       activePin.classList.remove('map__pin--active');
     }
-    closePopup.removeEventListener('click', closeCard);
+    // var closePopup = document.querySelector('.popup__close');
+    // closePopup.removeEventListener('click', closeCard);
     document.removeEventListener('keydown', cardCloseEscHandler);
   };
 
@@ -105,7 +105,7 @@
     removeChilds(photosBlock);
     photosBlock.appendChild(getCollectionOfArray(offer.offer.photos, renderPhotos));
 
-    var closePopup = mapCard.querySelector('.popup__close');
+    var closePopup = document.querySelector('.popup__close');
     closePopup.addEventListener('click', function () {
       closeCard();
     });
