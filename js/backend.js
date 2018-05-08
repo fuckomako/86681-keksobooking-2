@@ -2,7 +2,7 @@
 
 (function () {
   var TIMEOUT = 10000;
-  var DATA_URL = 'https://js.dump.academy/keksobooking/data11';
+  var DATA_URL = 'https://js.dump.academy/keksobooking/data';
   var SEND_URL = 'https://js.dump.academy/keksobooking';
 
   window.backend = {};

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var TIME = 15000;
+  var TIME_MESSAGE = 10000;
 
   var template = document.querySelector('template');
   var errorTemplate = template.content.querySelector('.error').cloneNode(true);
@@ -18,7 +18,7 @@
       var removeErrorPopup = function () {
         errorPopup.remove();
       };
-      setTimeout(removeErrorPopup, TIME);
+      setTimeout(removeErrorPopup, TIME_MESSAGE);
     }
   };
 })();

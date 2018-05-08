@@ -7,16 +7,16 @@
   var filterForm = document.querySelector('.map__filters');
 
   var addDisableForm = function () {
-    var fieldsetDisable = userForm.querySelectorAll('fieldset');
-    fieldsetDisable.forEach(function (it) {
+    var fieldsets = userForm.querySelectorAll('fieldset');
+    fieldsets.forEach(function (it) {
       it.setAttribute('disabled', 'disabled');
     });
   };
   addDisableForm();
 
   var removeDisableForm = function () {
-    var fieldsetEnable = userForm.querySelectorAll('fieldset');
-    fieldsetEnable.forEach(function (it) {
+    var fieldsets = userForm.querySelectorAll('fieldset');
+    fieldsets.forEach(function (it) {
       it.removeAttribute('disabled');
     });
   };

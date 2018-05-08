@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var TIME_CLOSE_POPUP = 4000;
+
   var roomsType = {
     'bungalo': 0,
     'flat': 1000,
@@ -100,18 +102,14 @@
     mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
     successMessage.classList.remove('hidden');
     window.util.resetPage();
+    setTimeout(function () {
+      successMessage.classList.add('hidden');
+    }, TIME_CLOSE_POPUP);
   };
 
   userForm.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(userForm), successHandler, window.error.errorHandler);
     evt.preventDefault();
-    document.addEventListener('keydown', successMessageRemove);
   });
 
-  var successMessageRemove = function () {
-    if (successMessage) {
-      successMessage.classList.add('hidden');
-    }
-  };
-  document.removeEventListener('keydown', successMessageRemove);
 })();
