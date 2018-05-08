@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
-  var map = document.querySelector('.map');
-  var userForm = document.querySelector('.ad-form');
-  var mainMapPin = document.querySelector('.map__pin--main');
-  var filterForm = document.querySelector('.map__filters');
+  var mapElement = document.querySelector('.map');
+  var userFormElement = document.querySelector('.ad-form');
+  var mainMapPinElement = document.querySelector('.map__pin--main');
+  var filterFormElement = document.querySelector('.map__filters');
 
   var addDisableForm = function () {
-    var fieldsets = userForm.querySelectorAll('fieldset');
+    var fieldsets = userFormElement.querySelectorAll('fieldset');
     fieldsets.forEach(function (it) {
       it.setAttribute('disabled', 'disabled');
     });
@@ -15,7 +15,7 @@
   addDisableForm();
 
   var removeDisableForm = function () {
-    var fieldsets = userForm.querySelectorAll('fieldset');
+    var fieldsets = userFormElement.querySelectorAll('fieldset');
     fieldsets.forEach(function (it) {
       it.removeAttribute('disabled');
     });
@@ -29,17 +29,17 @@
   };
 
   var resetPage = function () {
-    var openedCard = map.querySelector('.map__card');
-    map.classList.add('map--faded');
-    userForm.classList.add('ad-form--disabled');
-    if (openedCard) {
-      openedCard.remove();
+    var openedCardElement = mapElement.querySelector('.map__card');
+    mapElement.classList.add('map--faded');
+    userFormElement.classList.add('ad-form--disabled');
+    if (openedCardElement) {
+      openedCardElement.remove();
     }
     addDisableForm();
     removePins();
-    userForm.reset();
-    filterForm.reset();
-    mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
+    userFormElement.reset();
+    filterFormElement.reset();
+    mainMapPinElement.addEventListener('mouseup', window.mainPinMouseUpHandler);
   };
 
   var selectInvalidInput = function (input) {
@@ -51,8 +51,8 @@
   };
 
   var resetAllInvalidSelected = function () {
-    var invalidInputs = document.querySelectorAll('.invalid-value-input');
-    invalidInputs.forEach(function (it) {
+    var inputs = document.querySelectorAll('.invalid-value-input');
+    inputs.forEach(function (it) {
       resetInvalidSelectedInput(it);
     });
   };

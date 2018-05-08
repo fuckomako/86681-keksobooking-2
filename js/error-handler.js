@@ -3,20 +3,20 @@
 (function () {
   var TIME_MESSAGE = 10000;
 
-  var template = document.querySelector('template');
-  var errorTemplate = template.content.querySelector('.error').cloneNode(true);
+  var templateElement = document.querySelector('template');
+  var errorTemplateElement = templateElement.content.querySelector('.error').cloneNode(true);
 
   window.error = {
     errorHandler: function (errorTitle, errorText) {
 
-      errorTemplate.querySelector('.error__title').textContent = errorTitle;
-      errorTemplate.querySelector('.error__message').textContent = errorText;
+      errorTemplateElement.querySelector('.error__title').textContent = errorTitle;
+      errorTemplateElement.querySelector('.error__message').textContent = errorText;
 
-      document.body.insertAdjacentElement('afterbegin', errorTemplate);
+      document.body.insertAdjacentElement('afterbegin', errorTemplateElement);
 
-      var errorPopup = document.querySelector('.error');
+      var errorPopupElement = document.querySelector('.error');
       var removeErrorPopup = function () {
-        errorPopup.remove();
+        errorPopupElement.remove();
       };
       setTimeout(removeErrorPopup, TIME_MESSAGE);
     }

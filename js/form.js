@@ -9,15 +9,15 @@
     'house': 5000,
     'palace': 10000
   };
-  var mainMapPin = document.querySelector('.map__pin--main');
-  var userForm = document.querySelector('.ad-form');
-  var inputElements = userForm.querySelectorAll('input');
-  var apartamentInputElement = userForm.querySelector('select[name="type"]');
-  var priceInputElement = userForm.querySelector('input[name="price"]');
-  var checkInInputElement = userForm.querySelector('select[name="timein"]');
-  var checkOutInputElement = userForm.querySelector('select[name="timeout"]');
-  var roomsInputElement = userForm.querySelector('select[name="rooms"]');
-  var successMessage = document.querySelector('.success');
+  var mainMapPinElement = document.querySelector('.map__pin--main');
+  var userFormElement = document.querySelector('.ad-form');
+  var inputElements = userFormElement.querySelectorAll('input');
+  var apartamentInputElement = userFormElement.querySelector('select[name="type"]');
+  var priceInputElement = userFormElement.querySelector('input[name="price"]');
+  var checkInInputElement = userFormElement.querySelector('select[name="timein"]');
+  var checkOutInputElement = userFormElement.querySelector('select[name="timeout"]');
+  var roomsInputElement = userFormElement.querySelector('select[name="rooms"]');
+  var successMessageElement = document.querySelector('.success');
 
   apartamentInputElement.addEventListener('change', function () {
     var minPrice = roomsType[apartamentInputElement.value];
@@ -42,8 +42,8 @@
   };
 
   var calculateRoomsAndCapacity = function () {
-    var capacityInputSelect = userForm.querySelector('select[name="capacity"]');
-    var capacityOptionOptions = capacityInputSelect.querySelectorAll('option');
+    var capacitySelectElement = userFormElement.querySelector('select[name="capacity"]');
+    var capacityOptionOptions = capacitySelectElement.querySelectorAll('option');
     var roomsInputValue = roomsInputElement.value;
 
     switch (roomsInputValue) {
@@ -73,7 +73,7 @@
   roomsInputElement.addEventListener('change', window.roomsInputChangeHandler);
 
   var checkDisabledOptions = function () {
-    var selectElements = userForm.querySelectorAll('select');
+    var selectElements = userFormElement.querySelectorAll('select');
     var isValid = true;
 
     selectElements.forEach(function (it) {
@@ -99,16 +99,16 @@
       window.util.resetInvalidSelectedInput(it);
       checkDisabledOptions();
     });
-    mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
-    successMessage.classList.remove('hidden');
+    mainMapPinElement.addEventListener('mouseup', window.mainPinMouseUpHandler);
+    successMessageElement.classList.remove('hidden');
     window.util.resetPage();
     setTimeout(function () {
-      successMessage.classList.add('hidden');
+      successMessageElement.classList.add('hidden');
     }, TIME_CLOSE_POPUP);
   };
 
-  userForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(userForm), successHandler, window.error.errorHandler);
+  userFormElement.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(userFormElement), successHandler, window.error.errorHandler);
     evt.preventDefault();
   });
 
