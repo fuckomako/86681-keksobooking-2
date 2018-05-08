@@ -3,6 +3,7 @@
   var MAIN_PIN_DEFAULT_X = 570;
   var MAIN_PIN_DEFAULT_Y = 375;
   var PINS_LIMIT = 5;
+  var PINS_CONDITIONS = 2;
 
   var userFormElement = document.querySelector('.ad-form');
   var mainMapPinElement = document.querySelector('.map__pin--main');
@@ -10,7 +11,7 @@
   window.mainPinMouseUpHandler = function () {
     window.activatePage();
     var buttons = document.querySelectorAll('.map__pins');
-    if (buttons.length < 2) {
+    if (buttons.length < PINS_CONDITIONS) {
       window.backend.load(loadHandler, window.error.errorHandler);
     }
     mainMapPinElement.removeEventListener('mousedown', window.mainPinMouseUpHandler);

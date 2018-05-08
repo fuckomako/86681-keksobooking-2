@@ -2,6 +2,9 @@
 
 (function () {
   var ESC_BUTTON = 27;
+  var TYPE_FLAT = 'flat';
+  var TYPE_BUNGALO = 'bungalo';
+  var TYPE_PALACE = 'palace';
   var mapElement = document.querySelector('.map');
   window.mapListElement = mapElement.querySelector('.map__pins');
   var templateElement = document.querySelector('template').content;
@@ -61,11 +64,11 @@
     var photosElement = mapCardElement.querySelector('.popup__photos');
 
     var getValueTypeOffer = function () {
-      if (offer.offer.type === 'flat') {
+      if (offer.offer.type === TYPE_FLAT) {
         return 'Квартира';
-      } else if (offer.offer.type === 'bungalo') {
+      } else if (offer.offer.type === TYPE_BUNGALO) {
         return 'Бунгало';
-      } else if (offer.offer.type === 'palace') {
+      } else if (offer.offer.type === TYPE_PALACE) {
         return 'Дворец';
       } else {
         return 'Дом';

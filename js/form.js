@@ -2,6 +2,10 @@
 
 (function () {
   var TIME_CLOSE_POPUP = 4000;
+  var ONE_ROOM = '1';
+  var TWO_ROOMS = '2';
+  var THREE_ROOMS = '3';
+  var ONE_HUNDRED_ROOMS = '100';
 
   var roomsType = {
     'bungalo': 0,
@@ -47,19 +51,19 @@
     var roomsInputValue = roomsInputElement.value;
 
     switch (roomsInputValue) {
-      case '1':
+      case ONE_ROOM:
         setDisabledValue(capacityOptionOptions, ['0', '2', '3']);
         capacityOptionOptions[0].selected = true;
         break;
-      case '2':
+      case TWO_ROOMS:
         setDisabledValue(capacityOptionOptions, ['0', '3']);
         capacityOptionOptions[1].selected = true;
         break;
-      case '3':
+      case THREE_ROOMS:
         setDisabledValue(capacityOptionOptions, ['0']);
         capacityOptionOptions[2].selected = true;
         break;
-      case '100':
+      case ONE_HUNDRED_ROOMS:
         setDisabledValue(capacityOptionOptions, ['1', '2', '3']);
         capacityOptionOptions[3].selected = true;
         break;

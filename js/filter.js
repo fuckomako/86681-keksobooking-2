@@ -3,6 +3,10 @@
 (function () {
   var MAX_PRICE = 10000;
   var MIN_PRICE = 50000;
+  var MAX_PINS = 5;
+  var PRICE_LOW = 'low';
+  var PRICE_MIDDLE = 'middle';
+  var PRICE_HIGH = 'high';
 
   var formFiltersElement = document.querySelector('.map__filters');
   var housingPriceElement = document.querySelector('#housing-price');
@@ -15,7 +19,7 @@
     window.debounce(function () {
       var filteredItemsElement = window.pins.filter(function (pin) {
         return filterPrice(pin) && filterRooms(pin) && filterGuests(pin) && filterType(pin) && filterFeatures(pin);
-      }).slice(0, 5);
+      }).slice(0, MAX_PINS);
       window.pins.forEach(function (it) {
         it.mapPinElement.style.display = filteredItemsElement.indexOf(it) >= 0 ? 'block' : 'none';
       });
@@ -28,11 +32,11 @@
 
   var filterPrice = function (pin) {
     switch (housingPriceElement.value) {
-      case 'low':
+      case PRICE_LOW:
         return pin.offer.price < MAX_PRICE;
-      case 'middle':
+      case PRICE_MIDDLE:
         return pin.offer.price >= MAX_PRICE && pin.offer.price < MIN_PRICE;
-      case 'high':
+      case PRICE_HIGH:
         return pin.offer.price >= MIN_PRICE;
       default:
         return true;
