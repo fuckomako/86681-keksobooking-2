@@ -5,6 +5,8 @@
   var userFormElement = document.querySelector('.ad-form');
   var mainMapPinElement = document.querySelector('.map__pin--main');
   var filterFormElement = document.querySelector('.map__filters');
+  var photoPreviewElement = document.querySelector('.ad-form-header__preview img');
+  var photoContainerElement = document.querySelector('.ad-form__photo');
 
   var addDisableForm = function () {
     var fieldsets = userFormElement.querySelectorAll('fieldset');
@@ -28,6 +30,13 @@
     });
   };
 
+  var removeImages = function () {
+    while (photoContainerElement.firstChild) {
+      photoContainerElement.removeChild(photoContainerElement.firstChild);
+    }
+    photoPreviewElement.src = 'img/muffin-grey.svg';
+  };
+
   var resetPage = function () {
     var openedCardElement = mapElement.querySelector('.map__card');
     mapElement.classList.add('map--faded');
@@ -39,6 +48,7 @@
     removePins();
     userFormElement.reset();
     filterFormElement.reset();
+    removeImages();
     mainMapPinElement.addEventListener('mouseup', window.mainPinMouseUpHandler);
   };
 
