@@ -48,7 +48,7 @@
     userFormElement.reset();
     filterFormElement.reset();
     removeImages();
-    mainMapPinElement.addEventListener('mouseup', window.mainPinMouseUpHandler);
+    mainMapPinElement.addEventListener('mouseup', window.map.mainPinMouseUpHandler);
   };
 
   var selectInvalidInput = function (input) {

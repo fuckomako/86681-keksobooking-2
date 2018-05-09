@@ -7,6 +7,7 @@
   var LIMIT_BOTTOM_Y = 500;
   var LIMIT_LEFT_X = 0;
   var LIMIT_RIGHT_X = 1200;
+
   var mainMapPinElement = document.querySelector('.map__pin--main');
   var fieldElement = document.querySelector('#address');
 

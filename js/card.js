@@ -5,6 +5,7 @@
   var TYPE_FLAT = 'flat';
   var TYPE_BUNGALO = 'bungalo';
   var TYPE_PALACE = 'palace';
+
   var mapElement = document.querySelector('.map');
   window.mapListElement = mapElement.querySelector('.map__pins');
   var templateElement = document.querySelector('template').content;
@@ -95,7 +96,7 @@
     var currentGuestsName = getCorrectName(offer.offer.guests, guests);
     mapCardElement.querySelector('.popup__title').textContent = offer.offer.title;
     mapCardElement.querySelector('.popup__text--address').textContent = offer.offer.address;
-    mapCardElement.querySelector('.popup__text--price').innerHTML = offer.offer.price + ' &#x20bd;/ночь';
+    mapCardElement.querySelector('.popup__text--price').innerHTML = offer.offer.price + ' ₽/ночь';
     mapCardElement.querySelector('.popup__type').textContent = getValueTypeOffer();
     mapCardElement.querySelector('.popup__text--capacity').textContent = offer.offer.rooms + ' ' + currentRoomsName + ' для ' + offer.offer.guests + ' ' + currentGuestsName;
     mapCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;

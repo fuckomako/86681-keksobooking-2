@@ -2,8 +2,6 @@
 
 (function () {
   var TIMEOUT = 10000;
-  var DATA_URL = 'https://js.dump.academy/keksobooking/data';
-  var SEND_URL = 'https://js.dump.academy/keksobooking';
 
   window.backend = {};
 
@@ -32,13 +30,7 @@
     xhr.send(data);
   };
 
-  window.backend.load = function (onLoad, onError) {
-    var xhr = getData(DATA_URL, 'GET', null, onLoad, onError);
-    return xhr;
-  };
-
-  window.backend.save = function (onLoad, onError) {
-    var xhr = getData(SEND_URL, 'POST', onLoad, onError);
-    return xhr;
+  window.backend = {
+    getData: getData
   };
 })();

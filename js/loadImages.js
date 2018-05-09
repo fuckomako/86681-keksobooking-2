@@ -4,6 +4,7 @@
   var MAX_PHOTOS = 8;
   var PHOTOS = ['jpg', 'jpeg', 'png'];
   var PHOTO_CONTAINER_ELEMENT = document.querySelector('.ad-form__photo');
+
   var avatarUploadElemnt = document.querySelector('.ad-form__field input[type=file]');
   var ImageInputElement = document.querySelector('.ad-form-header__preview img');
   var photoUploadElement = document.querySelector('.ad-form__upload input[type=file]');
