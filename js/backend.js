@@ -7,7 +7,7 @@
 
   window.backend = {};
 
-  var getData = function (onLoad, onError) {
+  var getData = function (url, method, data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
@@ -28,18 +28,17 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    return xhr;
+    xhr.open(method, url);
+    xhr.send(data);
   };
 
   window.backend.load = function (onLoad, onError) {
-    var xhr = getData(onLoad, onError);
-    xhr.open('GET', DATA_URL);
-    xhr.send();
+    var xhr = getData(DATA_URL, 'GET', null, onLoad, onError);
+    return xhr;
   };
 
-  window.backend.save = function (data, onLoad, onError) {
-    var xhr = getData(onLoad, onError);
-    xhr.open('POST', SEND_URL);
-    xhr.send(data);
+  window.backend.save = function (onLoad, onError) {
+    var xhr = getData(SEND_URL, 'POST', onLoad, onError);
+    return xhr;
   };
 })();

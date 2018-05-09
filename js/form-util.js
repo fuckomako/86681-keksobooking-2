@@ -7,9 +7,9 @@
   var filterFormElement = document.querySelector('.map__filters');
   var photoPreviewElement = document.querySelector('.ad-form-header__preview img');
   var photoContainerElement = document.querySelector('.ad-form__photo');
+  var fieldsets = userFormElement.querySelectorAll('fieldset');
 
   var addDisableForm = function () {
-    var fieldsets = userFormElement.querySelectorAll('fieldset');
     fieldsets.forEach(function (it) {
       it.setAttribute('disabled', 'disabled');
     });
@@ -17,7 +17,6 @@
   addDisableForm();
 
   var removeDisableForm = function () {
-    var fieldsets = userFormElement.querySelectorAll('fieldset');
     fieldsets.forEach(function (it) {
       it.removeAttribute('disabled');
     });

@@ -44,27 +44,15 @@
   };
 
   var filterType = function (pin) {
-    if (housingTypeElement.value === 'any') {
-      return true;
-    } else {
-      return pin.offer.type === housingTypeElement.value;
-    }
+    return housingTypeElement.value === 'any' || pin.offer.type === housingTypeElement.value;
   };
 
   var filterRooms = function (pin) {
-    if (housingRoomsElement.value === 'any') {
-      return true;
-    } else {
-      return pin.offer.rooms === Math.floor(housingRoomsElement.value);
-    }
+    return housingRoomsElement.value === 'any' || pin.offer.rooms === Math.floor(housingRoomsElement.value);
   };
 
   var filterGuests = function (pin) {
-    if (housingGuestsElement.value === 'any') {
-      return true;
-    } else {
-      return pin.offer.guests === Math.floor(housingGuestsElement.value);
-    }
+    return housingGuestsElement.value === 'any' || pin.offer.guests === Math.floor(housingGuestsElement.value);
   };
 
   var filterFeatures = function (pin) {
