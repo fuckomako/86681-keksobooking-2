@@ -71,9 +71,9 @@
         return 'Бунгало';
       } if (offer.offer.type === TYPE_PALACE) {
         return 'Дворец';
-      } else {
-        return 'Дом';
       }
+
+      return 'Дом';
     };
 
     var getCorrectName = function (number, arrWords) {
