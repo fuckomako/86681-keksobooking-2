@@ -1,21 +1,23 @@
 'use strict';
 
 (function () {
-  var map = document.querySelector('.map');
-  var userForm = document.querySelector('.ad-form');
-  var mainMapPin = document.querySelector('.map__pin--main');
+  var mapElement = document.querySelector('.map');
+  var userFormElement = document.querySelector('.ad-form');
+  var mainMapPinElement = document.querySelector('.map__pin--main');
+  var filterFormElement = document.querySelector('.map__filters');
+  var photoPreviewElement = document.querySelector('.ad-form-header__preview img');
+  var photoContainerElement = document.querySelector('.ad-form__photo');
+  var fieldsets = userFormElement.querySelectorAll('fieldset');
 
   var addDisableForm = function () {
-    var fieldsetDisable = userForm.querySelectorAll('fieldset');
-    fieldsetDisable.forEach(function (it) {
+    fieldsets.forEach(function (it) {
       it.setAttribute('disabled', 'disabled');
     });
   };
   addDisableForm();
 
   var removeDisableForm = function () {
-    var fieldsetEnable = userForm.querySelectorAll('fieldset');
-    fieldsetEnable.forEach(function (it) {
+    fieldsets.forEach(function (it) {
       it.removeAttribute('disabled');
     });
   };
@@ -27,13 +29,26 @@
     });
   };
 
+  var removeImages = function () {
+    while (photoContainerElement.firstChild) {
+      photoContainerElement.removeChild(photoContainerElement.firstChild);
+    }
+    photoPreviewElement.src = 'img/muffin-grey.svg';
+  };
+
   var resetPage = function () {
-    map.classList.add('map--faded');
-    userForm.classList.add('ad-form--disabled');
+    var openedCardElement = mapElement.querySelector('.map__card');
+    mapElement.classList.add('map--faded');
+    userFormElement.classList.add('ad-form--disabled');
+    if (openedCardElement) {
+      openedCardElement.remove();
+    }
     addDisableForm();
     removePins();
-    window.card.closeCard();
-    mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
+    userFormElement.reset();
+    filterFormElement.reset();
+    removeImages();
+    mainMapPinElement.addEventListener('mouseup', window.map.mainPinMouseUpHandler);
   };
 
   var selectInvalidInput = function (input) {
@@ -45,8 +60,8 @@
   };
 
   var resetAllInvalidSelected = function () {
-    var invalidInputs = document.querySelectorAll('.invalid-value-input');
-    invalidInputs.forEach(function (it) {
+    var inputs = document.querySelectorAll('.invalid-value-input');
+    inputs.forEach(function (it) {
       resetInvalidSelectedInput(it);
     });
   };

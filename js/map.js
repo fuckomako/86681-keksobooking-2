@@ -3,49 +3,52 @@
   var MAIN_PIN_DEFAULT_X = 570;
   var MAIN_PIN_DEFAULT_Y = 375;
   var PINS_LIMIT = 5;
+  var PINS_CONDITIONS = 2;
 
-  var userForm = document.querySelector('.ad-form');
-  var mainMapPin = document.querySelector('.map__pin--main');
+  var userFormElement = document.querySelector('.ad-form');
+  var mainMapPinElement = document.querySelector('.map__pin--main');
 
-  window.mainPinMouseUpHandler = function (evt) {
-    window.activatePage(evt);
-    var buttonElement = document.querySelectorAll('.map__pins');
-    if (buttonElement.length < 2) {
-      window.backend.load(loadHandler, window.errorHandler);
+  window.map = {
+    mainPinMouseUpHandler: function () {
+      window.activatePage();
+      var buttons = document.querySelectorAll('.map__pins');
+      if (buttons.length < PINS_CONDITIONS) {
+        window.backend.load(loadHandler, window.error.errorHandler);
+      }
+      mainMapPinElement.removeEventListener('mousedown', window.map.mainPinMouseUpHandler);
     }
-    mainMapPin.removeEventListener('mouseup', window.mainPinMouseUpHandler);
   };
 
-  mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
+  mainMapPinElement.addEventListener('mousedown', window.map.mainPinMouseUpHandler);
 
   var buttonResetClickHandler = function () {
     window.util.resetPage();
   };
 
-  userForm.addEventListener('reset', buttonResetClickHandler);
+  userFormElement.addEventListener('reset', buttonResetClickHandler);
 
   var setDefaultValueForm = function () {
-    mainMapPin.style.left = MAIN_PIN_DEFAULT_X + 'px';
-    mainMapPin.style.top = MAIN_PIN_DEFAULT_Y + 'px';
+    mainMapPinElement.style.left = MAIN_PIN_DEFAULT_X + 'px';
+    mainMapPinElement.style.top = MAIN_PIN_DEFAULT_Y + 'px';
   };
 
   var disablePageHandler = function () {
     setDefaultValueForm();
   };
 
-  userForm.addEventListener('click', disablePageHandler);
+  userFormElement.addEventListener('click', disablePageHandler);
 
   var loadHandler = function (pins) {
     window.pins = pins;
-    var copyPins = pins.slice(0);
-    var fragment = document.createDocumentFragment();
-    var buttonElement = document.querySelector('.map__pins');
+    var copyPinsElement = pins.slice();
+    var fragmentElement = document.createDocumentFragment();
+    var buttons = document.querySelector('.map__pins');
 
-    copyPins.forEach(function (it, pin) {
-      fragment.appendChild(window.renderMapPin(it, pin < PINS_LIMIT));
+    copyPinsElement.forEach(function (it, pin) {
+      fragmentElement.appendChild(window.renderMapPin(it, pin < PINS_LIMIT));
     });
 
-    buttonElement.appendChild(fragment);
+    buttons.appendChild(fragmentElement);
   };
 
 })();

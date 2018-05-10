@@ -1,25 +1,28 @@
 'use strict';
 
 (function () {
-  window.renderMapPin = function (offer, isVisible) {
-    var map = document.querySelector('.map');
-    var mapTemplate = document.querySelector('template').content;
-    var mapPin = mapTemplate.querySelector('.map__pin').cloneNode(true);
-    var mapPinImage = mapPin.querySelector('img');
+  var LEFT_POSITION = 25;
+  var TOP_POSITION = 70;
 
-    mapPin.style.left = (offer.location.x - 25) + 'px';
-    mapPin.style.top = (offer.location.y - 70) + 'px';
-    mapPin.style.display = isVisible ? 'block' : 'none';
-    mapPinImage.src = offer.author.avatar;
-    mapPinImage.alt = offer.offer.title;
-    mapPin.addEventListener('click', function () {
-      if (map.querySelector('.map__card')) {
-        window.card.closeCard();
+  window.renderMapPin = function (offer, isVisible) {
+    var mapElement = document.querySelector('.map');
+    var mapTemplateElement = document.querySelector('template').content;
+    var mapPinElement = mapTemplateElement.querySelector('.map__pin').cloneNode(true);
+    var mapPinImageElement = mapPinElement.querySelector('img');
+
+    mapPinElement.style.left = (offer.location.x - LEFT_POSITION) + 'px';
+    mapPinElement.style.top = (offer.location.y - TOP_POSITION) + 'px';
+    mapPinElement.style.display = isVisible ? 'block' : 'none';
+    mapPinImageElement.src = offer.author.avatar;
+    mapPinImageElement.alt = offer.offer.title;
+    mapPinElement.addEventListener('click', function () {
+      if (mapElement.querySelector('.map__card')) {
+        window.closeCard();
       }
-      window.card.showCard(offer);
+      window.showCard(offer);
     });
-    offer.mapPin = mapPin;
-    return mapPin;
+    offer.mapPinElement = mapPinElement;
+    return mapPinElement;
   };
 
 })();

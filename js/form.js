@@ -1,21 +1,27 @@
 'use strict';
 
 (function () {
+  var TIME_CLOSE_POPUP = 4000;
+  var ONE_ROOM = '1';
+  var TWO_ROOMS = '2';
+  var THREE_ROOMS = '3';
+  var ONE_HUNDRED_ROOMS = '100';
+
   var roomsType = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
     'palace': 10000
   };
-  var mainMapPin = document.querySelector('.map__pin--main');
-  var userForm = document.querySelector('.ad-form');
-  var inputElements = userForm.querySelectorAll('input');
-  var apartamentInputElement = userForm.querySelector('select[name="type"]');
-  var priceInputElement = userForm.querySelector('input[name="price"]');
-  var checkInInputElement = userForm.querySelector('select[name="timein"]');
-  var checkOutInputElement = userForm.querySelector('select[name="timeout"]');
-  var roomsInputElement = userForm.querySelector('select[name="rooms"]');
-  var successMessage = document.querySelector('.success');
+  var mainMapPinElement = document.querySelector('.map__pin--main');
+  var userFormElement = document.querySelector('.ad-form');
+  var inputElements = userFormElement.querySelectorAll('input');
+  var apartamentInputElement = userFormElement.querySelector('select[name="type"]');
+  var priceInputElement = userFormElement.querySelector('input[name="price"]');
+  var checkInInputElement = userFormElement.querySelector('select[name="timein"]');
+  var checkOutInputElement = userFormElement.querySelector('select[name="timeout"]');
+  var roomsInputElement = userFormElement.querySelector('select[name="rooms"]');
+  var successMessageElement = document.querySelector('.success');
 
   apartamentInputElement.addEventListener('change', function () {
     var minPrice = roomsType[apartamentInputElement.value];
@@ -40,24 +46,24 @@
   };
 
   var calculateRoomsAndCapacity = function () {
-    var capacityInputSelect = userForm.querySelector('select[name="capacity"]');
-    var capacityOptionOptions = capacityInputSelect.querySelectorAll('option');
+    var capacitySelectElement = userFormElement.querySelector('select[name="capacity"]');
+    var capacityOptionOptions = capacitySelectElement.querySelectorAll('option');
     var roomsInputValue = roomsInputElement.value;
 
     switch (roomsInputValue) {
-      case '1':
+      case ONE_ROOM:
         setDisabledValue(capacityOptionOptions, ['0', '2', '3']);
         capacityOptionOptions[0].selected = true;
         break;
-      case '2':
+      case TWO_ROOMS:
         setDisabledValue(capacityOptionOptions, ['0', '3']);
         capacityOptionOptions[1].selected = true;
         break;
-      case '3':
+      case THREE_ROOMS:
         setDisabledValue(capacityOptionOptions, ['0']);
         capacityOptionOptions[2].selected = true;
         break;
-      case '100':
+      case ONE_HUNDRED_ROOMS:
         setDisabledValue(capacityOptionOptions, ['1', '2', '3']);
         capacityOptionOptions[3].selected = true;
         break;
@@ -71,7 +77,7 @@
   roomsInputElement.addEventListener('change', window.roomsInputChangeHandler);
 
   var checkDisabledOptions = function () {
-    var selectElements = userForm.querySelectorAll('select');
+    var selectElements = userFormElement.querySelectorAll('select');
     var isValid = true;
 
     selectElements.forEach(function (it) {
@@ -86,30 +92,28 @@
     return isValid;
   };
 
-  for (var i = 0; i < inputElements.length; i++) {
-    inputElements[i].addEventListener('invalid', function (evt) {
+  inputElements.forEach(function (it) {
+    it.addEventListener('invalid', function (evt) {
       window.util.selectInvalidInput(evt.target);
     });
-  }
-
-  userForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(userForm), function () {
-      for (var k = 0; k < inputElements.length; k++) {
-        window.util.resetInvalidSelectedInput(inputElements[k]);
-        checkDisabledOptions();
-      }
-      mainMapPin.addEventListener('mouseup', window.mainPinMouseUpHandler);
-      successMessage.classList.remove('hidden');
-      window.util.resetPage();
-      userForm.reset();
-    });
-    evt.preventDefault();
-    document.addEventListener('keydown', successMessageRemove);
   });
-  var successMessageRemove = function () {
-    if (successMessage) {
-      successMessage.classList.add('hidden');
-    }
+
+  var successHandler = function () {
+    inputElements.forEach(function (it) {
+      window.util.resetInvalidSelectedInput(it);
+      checkDisabledOptions();
+    });
+    mainMapPinElement.addEventListener('mouseup', window.map.mainPinMouseUpHandler);
+    successMessageElement.classList.remove('hidden');
+    window.util.resetPage();
+    setTimeout(function () {
+      successMessageElement.classList.add('hidden');
+    }, TIME_CLOSE_POPUP);
   };
-  document.removeEventListener('keydown', successMessageRemove);
+
+  userFormElement.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(userFormElement), successHandler, window.error.errorHandler);
+    evt.preventDefault();
+  });
+
 })();
