@@ -67,9 +67,13 @@
     var getValueTypeOffer = function () {
       if (offer.offer.type === TYPE_FLAT) {
         return 'Квартира';
-      } if (offer.offer.type === TYPE_BUNGALO) {
+      }
+
+      if (offer.offer.type === TYPE_BUNGALO) {
         return 'Бунгало';
-      } if (offer.offer.type === TYPE_PALACE) {
+      }
+
+      if (offer.offer.type === TYPE_PALACE) {
         return 'Дворец';
       }
 
