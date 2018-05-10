@@ -4,7 +4,6 @@
   var MAIN_PIN_DEFAULT_Y = 375;
   var PINS_LIMIT = 5;
   var PINS_CONDITIONS = 2;
-  var DATA_URL = 'https://js.dump.academy/keksobooking/data';
 
   var userFormElement = document.querySelector('.ad-form');
   var mainMapPinElement = document.querySelector('.map__pin--main');
@@ -14,7 +13,7 @@
       window.activatePage();
       var buttons = document.querySelectorAll('.map__pins');
       if (buttons.length < PINS_CONDITIONS) {
-        window.backend.getData(DATA_URL, 'GET', null, loadHandler, window.error.errorHandler);
+        window.backend.load(loadHandler, window.error.errorHandler);
       }
       mainMapPinElement.removeEventListener('mousedown', window.map.mainPinMouseUpHandler);
     }

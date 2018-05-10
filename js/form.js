@@ -6,7 +6,6 @@
   var TWO_ROOMS = '2';
   var THREE_ROOMS = '3';
   var ONE_HUNDRED_ROOMS = '100';
-  var SEND_DATA = 'https://js.dump.academy/keksobooking';
 
   var roomsType = {
     'bungalo': 0,
@@ -113,7 +112,7 @@
   };
 
   userFormElement.addEventListener('submit', function (evt) {
-    window.backend.getData(SEND_DATA, 'POST', new FormData(userFormElement), successHandler, window.error.errorHandler);
+    window.backend.save(new FormData(userFormElement), successHandler, window.error.errorHandler);
     evt.preventDefault();
   });
 
