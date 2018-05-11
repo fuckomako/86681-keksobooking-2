@@ -2,8 +2,10 @@
 
 (function () {
   var MAX_PHOTOS = 8;
-  var PHOTOS = ['jpg', 'jpeg', 'png'];
-  var PHOTO_CONTAINER_ELEMENT = document.querySelector('.ad-form__photo');
+  var PHOTOS = ['jpg', 'jpeg', 'png', 'gif'];
+  var IMAGE_WIDTH = 70;
+  var IMAGE_HEIGHT = 70;
+  var photoContainerElement = document.querySelector('.ad-form__photo');
 
   var avatarUploadElemnt = document.querySelector('.ad-form__field input[type=file]');
   var ImageInputElement = document.querySelector('.ad-form-header__preview img');
@@ -30,15 +32,15 @@
     var imageElement = document.createElement('img');
     imageElement.alt = 'Фотография жилья';
     imageElement.src = source;
-    imageElement.width = 70;
+    imageElement.width = IMAGE_WIDTH;
     imageElement.draggable = true;
-    imageElement.height = 70;
+    imageElement.height = IMAGE_HEIGHT;
     imageElement.style.margin = '2px';
-    PHOTO_CONTAINER_ELEMENT.style.display = 'flex';
-    PHOTO_CONTAINER_ELEMENT.style.justifyContent = 'space-around';
-    PHOTO_CONTAINER_ELEMENT.style.alignItems = 'center';
-    PHOTO_CONTAINER_ELEMENT.style.width = 'auto';
-    PHOTO_CONTAINER_ELEMENT.appendChild(imageElement);
+    photoContainerElement.style.display = 'flex';
+    photoContainerElement.style.justifyContent = 'space-around';
+    photoContainerElement.style.alignItems = 'center';
+    photoContainerElement.style.width = 'auto';
+    photoContainerElement.appendChild(imageElement);
   };
 
   photoUploadElement.addEventListener('change', function () {

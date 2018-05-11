@@ -23,9 +23,9 @@
   };
 
   var removePins = function () {
-    var buttons = window.mapListElement.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var buttons = window.card.mapListElement.querySelectorAll('.map__pin:not(.map__pin--main)');
     buttons.forEach(function (it) {
-      window.mapListElement.removeChild(it);
+      window.card.mapListElement.removeChild(it);
     });
   };
 

@@ -17,9 +17,9 @@
     mapPinImageElement.alt = offer.offer.title;
     mapPinElement.addEventListener('click', function () {
       if (mapElement.querySelector('.map__card')) {
-        window.closeCard();
+        window.card.closeCard();
       }
-      window.showCard(offer);
+      window.card.showCard(offer);
     });
     offer.mapPinElement = mapPinElement;
     return mapPinElement;

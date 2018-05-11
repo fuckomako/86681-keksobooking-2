@@ -9,6 +9,7 @@
   var mainMapPinElement = document.querySelector('.map__pin--main');
 
   window.map = {
+    pins: [],
     mainPinMouseUpHandler: function () {
       window.activatePage();
       var buttons = document.querySelectorAll('.map__pins');
@@ -39,7 +40,7 @@
   userFormElement.addEventListener('click', disablePageHandler);
 
   var loadHandler = function (pins) {
-    window.pins = pins;
+    window.map.pins = pins;
     var copyPinsElement = pins.slice();
     var fragmentElement = document.createDocumentFragment();
     var buttons = document.querySelector('.map__pins');

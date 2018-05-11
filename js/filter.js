@@ -17,10 +17,10 @@
 
   var acceptFilterHandler = function () {
     window.debounce(function () {
-      var filteredItemsElement = window.pins.filter(function (pin) {
+      var filteredItemsElement = window.map.pins.filter(function (pin) {
         return filterPrice(pin) && filterRooms(pin) && filterGuests(pin) && filterType(pin) && filterFeatures(pin);
       }).slice(0, MAX_PINS);
-      window.pins.forEach(function (it) {
+      window.map.pins.forEach(function (it) {
         it.mapPinElement.style.display = filteredItemsElement.indexOf(it) >= 0 ? 'block' : 'none';
       });
       var popupElement = document.querySelector('.popup');
@@ -56,9 +56,9 @@
   };
 
   var filterFeatures = function (pin) {
-    var mapFeaturesElement = formFiltersElement.querySelectorAll('input:checked');
+    var mapFeaturesElements = formFiltersElement.querySelectorAll('input:checked');
 
-    return Array.prototype.every.call(mapFeaturesElement, function (it) {
+    return Array.prototype.every.call(mapFeaturesElements, function (it) {
       return pin.offer.features.indexOf(it.value) !== -1;
     });
   };
