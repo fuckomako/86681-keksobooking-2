@@ -6,7 +6,7 @@
   var TWO_ROOMS = '2';
   var THREE_ROOMS = '3';
   var ONE_HUNDRED_ROOMS = '100';
-  var ZERO_GUEST = '0';
+  var ONE_GUEST_INDEX = '0';
   var ONE_GUEST = '1';
   var TWO_GUESTS = '2';
   var THREE_GUESTS = '3';
@@ -56,15 +56,15 @@
 
     switch (roomsInputValue) {
       case ONE_ROOM:
-        setDisabledValue(capacityOptionOptions, [ZERO_GUEST, TWO_GUESTS, THREE_GUESTS]);
-        capacityOptionOptions[ZERO_GUEST].selected = true;
+        setDisabledValue(capacityOptionOptions, [ONE_GUEST_INDEX, TWO_GUESTS, THREE_GUESTS]);
+        capacityOptionOptions[ONE_GUEST_INDEX].selected = true;
         break;
       case TWO_ROOMS:
-        setDisabledValue(capacityOptionOptions, [ZERO_GUEST, THREE_GUESTS]);
+        setDisabledValue(capacityOptionOptions, [ONE_GUEST_INDEX, THREE_GUESTS]);
         capacityOptionOptions[ONE_GUEST].selected = true;
         break;
       case THREE_ROOMS:
-        setDisabledValue(capacityOptionOptions, [ZERO_GUEST]);
+        setDisabledValue(capacityOptionOptions, [ONE_GUEST_INDEX]);
         capacityOptionOptions[TWO_GUESTS].selected = true;
         break;
       case ONE_HUNDRED_ROOMS:
