@@ -57,19 +57,19 @@
     switch (roomsInputValue) {
       case ONE_ROOM:
         setDisabledValue(capacityOptionOptions, [ZERO_GUEST, TWO_GUESTS, THREE_GUESTS]);
-        capacityOptionOptions[0].selected = true;
+        capacityOptionOptions[ZERO_GUEST].selected = true;
         break;
       case TWO_ROOMS:
         setDisabledValue(capacityOptionOptions, [ZERO_GUEST, THREE_GUESTS]);
-        capacityOptionOptions[1].selected = true;
+        capacityOptionOptions[ONE_GUEST].selected = true;
         break;
       case THREE_ROOMS:
         setDisabledValue(capacityOptionOptions, [ZERO_GUEST]);
-        capacityOptionOptions[2].selected = true;
+        capacityOptionOptions[TWO_GUESTS].selected = true;
         break;
       case ONE_HUNDRED_ROOMS:
         setDisabledValue(capacityOptionOptions, [ONE_GUEST, TWO_GUESTS, THREE_GUESTS]);
-        capacityOptionOptions[3].selected = true;
+        capacityOptionOptions[THREE_GUESTS].selected = true;
         break;
     }
   };
