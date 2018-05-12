@@ -6,10 +6,10 @@
   var TWO_ROOMS = '2';
   var THREE_ROOMS = '3';
   var ONE_HUNDRED_ROOMS = '100';
-  var ZERO_INPUT_ELEMENT = '0';
-  var ONE_INPUT_ELEMENT = '1';
-  var TWO_INPUT_ELEMENT = '2';
-  var THREE_INPUT_ELEMENT = '3';
+  var ZERO_GUEST = '0';
+  var ONE_GUEST = '1';
+  var TWO_GUESTS = '2';
+  var THREE_GUESTS = '3';
 
   var roomsType = {
     'bungalo': 0,
@@ -56,19 +56,19 @@
 
     switch (roomsInputValue) {
       case ONE_ROOM:
-        setDisabledValue(capacityOptionOptions, [ZERO_INPUT_ELEMENT, TWO_INPUT_ELEMENT, THREE_INPUT_ELEMENT]);
+        setDisabledValue(capacityOptionOptions, [ZERO_GUEST, TWO_GUESTS, THREE_GUESTS]);
         capacityOptionOptions[0].selected = true;
         break;
       case TWO_ROOMS:
-        setDisabledValue(capacityOptionOptions, [ZERO_INPUT_ELEMENT, THREE_INPUT_ELEMENT]);
+        setDisabledValue(capacityOptionOptions, [ZERO_GUEST, THREE_GUESTS]);
         capacityOptionOptions[1].selected = true;
         break;
       case THREE_ROOMS:
-        setDisabledValue(capacityOptionOptions, [ZERO_INPUT_ELEMENT]);
+        setDisabledValue(capacityOptionOptions, [ZERO_GUEST]);
         capacityOptionOptions[2].selected = true;
         break;
       case ONE_HUNDRED_ROOMS:
-        setDisabledValue(capacityOptionOptions, [ONE_INPUT_ELEMENT, TWO_INPUT_ELEMENT, THREE_INPUT_ELEMENT]);
+        setDisabledValue(capacityOptionOptions, [ONE_GUEST, TWO_GUESTS, THREE_GUESTS]);
         capacityOptionOptions[3].selected = true;
         break;
     }

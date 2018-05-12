@@ -17,11 +17,11 @@
 
   var acceptFilterHandler = function () {
     window.debounce(function () {
-      var filteredItemsElement = window.map.pins.filter(function (pin) {
+      var filteredItemsElements = window.map.pins.filter(function (pin) {
         return filterPrice(pin) && filterRooms(pin) && filterGuests(pin) && filterType(pin) && filterFeatures(pin);
       }).slice(0, MAX_PINS);
       window.map.pins.forEach(function (it) {
-        it.mapPinElement.style.display = filteredItemsElement.indexOf(it) >= 0 ? 'block' : 'none';
+        it.mapPinElement.style.display = filteredItemsElements.indexOf(it) >= 0 ? 'block' : 'none';
       });
       var popupElement = document.querySelector('.popup');
       if (popupElement) {

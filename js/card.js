@@ -40,7 +40,7 @@
   };
 
   window.card = {
-    closeCard: function () {
+    close: function () {
       var mapCardElement = document.querySelector('.map__card');
       if (mapCardElement) {
         mapCardElement.remove();
@@ -54,7 +54,7 @@
 
     mapListElement: mapElement.querySelector('.map__pins'),
 
-    showCard: function (offer) {
+    show: function (offer) {
       var mapCardElement = templateElement.querySelector('.map__card').cloneNode(true);
       mapElement.insertBefore(mapCardElement, document.querySelector('.map__filters-container'));
       var featuresElement = mapCardElement.querySelector('.popup__features');
@@ -109,7 +109,7 @@
 
       var closePopupElement = document.querySelector('.popup__close');
       closePopupElement.addEventListener('click', function () {
-        window.card.closeCard();
+        window.card.close();
       });
       document.addEventListener('keydown', cardCloseEscHandler);
 
@@ -119,7 +119,7 @@
 
   var cardCloseEscHandler = function (evt) {
     if (evt.keyCode === ESC_BUTTON) {
-      window.card.closeCard();
+      window.card.close();
     }
   };
 })();
